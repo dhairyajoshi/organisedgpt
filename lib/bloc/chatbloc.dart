@@ -7,6 +7,13 @@ import 'package:organisedgpt/services/database.dart';
 
 class ChatLoadingState extends AppState {}
 
+class UnderProgressState extends AppState{
+  int _op;
+  UnderProgressState(this._op);
+
+  get op => _op;
+}
+
 class ChatLoadedState extends AppState {
   final List<Map<String, dynamic>> _chats;
   int op;
@@ -93,7 +100,12 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         op = event.op;
-        emit(ChatLoadedState(allChats[op], op));
+        if(op==3){
+          emit(UnderProgressState(op));
+        }
+        else {
+          emit(ChatLoadedState(allChats[op], op));
+        }
       },
     );
   }
