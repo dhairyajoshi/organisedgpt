@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/authbloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -45,9 +46,14 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    InkWell( 
+                      child: Text('you can get your api key at: https://platform.openai.com/account/api-keys',style: TextStyle(fontSize: 12),),  
+                      onTap: ()=> launch('https://platform.openai.com/account/api-keys'), 
+                    ),
                     SizedBox(
                       height: 10,
                     ),
+                    
                     TextButton(
                         onPressed: () {
                           BlocProvider.of<AuthBloc>(context)
