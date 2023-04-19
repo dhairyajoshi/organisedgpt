@@ -31,7 +31,7 @@ class SelectOptionEvent extends AppEvent{
 }
 
 class ChatBloc extends Bloc<AppEvent, AppState> {
-  List<List<Map<String, dynamic>>> allChats = [[{'u': 1, "c": 'Ask any question...', 't': 0}],[{'u': 1, "c": 'Ask any question...', 't': 0}],[{'u': 1, "c": 'Ask any question...', 't': 0}],[{'u': 1, "c": 'Ask any question...', 't': 0}]];
+  List<List<Map<String, dynamic>>> allChats = [[{'u': 1, "c": 'Ask any question...', 't': 0}],[{'u': 1, "c": 'Start with any phrase...', 't': 0}],[{'u': 1, "c": 'Give any description...', 't': 0}],[{'u': 1, "c": 'Upload an audio...', 't': 0}]];
   
   int op = 0;
   ChatBloc()
