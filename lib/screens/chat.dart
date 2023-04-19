@@ -85,7 +85,7 @@ class ChatScreen extends StatelessWidget {
                                                       color: Colors.grey))),
                                           child: Center(
                                             child: Text(
-                                              'Chat',
+                                              'Normal Chat',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -111,7 +111,7 @@ class ChatScreen extends StatelessWidget {
                                               horizontal: 15, vertical: 15),
                                           child: Center(
                                             child: Text(
-                                              'Completion',
+                                              'Unhinged',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -316,7 +316,7 @@ class ChatScreen extends StatelessWidget {
                                                       color: Colors.grey))),
                                           child: Center(
                                             child: Text(
-                                              'Chat',
+                                              'Normal Chat',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -342,7 +342,7 @@ class ChatScreen extends StatelessWidget {
                                               horizontal: 15, vertical: 15),
                                           child: Center(
                                             child: Text(
-                                              'Completion',
+                                              'Unhinged',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),

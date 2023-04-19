@@ -24,7 +24,7 @@ class MobileChatScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('OrganisedGPT'),
         ),
-        drawer: BlocBuilder<ChatBloc,AppState>( 
+        drawer: BlocBuilder<ChatBloc, AppState>(
           builder: (context, state) {
             if (state is ChatLoadingState) {
               return Center(
@@ -37,7 +37,7 @@ class MobileChatScreen extends StatelessWidget {
                 // space to fit everything.
                 child: ListView(
                   // Important: Remove any padding from the ListView.
-                  padding: EdgeInsets.symmetric(vertical: 25,horizontal: 10), 
+                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                   children: [
                     Text(
                       'Preferences',
@@ -72,7 +72,7 @@ class MobileChatScreen extends StatelessWidget {
                                             BorderSide(color: Colors.grey))),
                                 child: Center(
                                   child: Text(
-                                    'Chat',
+                                    'Normal Chat',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -97,7 +97,7 @@ class MobileChatScreen extends StatelessWidget {
                                     horizontal: 15, vertical: 15),
                                 child: Center(
                                   child: Text(
-                                    'Completion',
+                                    'Unhinged',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -245,15 +245,14 @@ class MobileChatScreen extends StatelessWidget {
                   ],
                 ),
               );
-            }
-            else if (state is UnderProgressState) {
+            } else if (state is UnderProgressState) {
               return Drawer(
                 // Add a ListView to the drawer. This ensures the user can scroll
                 // through the options in the drawer if there isn't enough vertical
                 // space to fit everything.
                 child: ListView(
                   // Important: Remove any padding from the ListView.
-                  padding: EdgeInsets.symmetric(vertical: 25,horizontal: 10), 
+                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                   children: [
                     Text(
                       'Preferences',
@@ -280,7 +279,7 @@ class MobileChatScreen extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 decoration: BoxDecoration(
-                                    color: state.op == 0 
+                                    color: state.op == 0
                                         ? Color.fromARGB(255, 95, 95, 95)
                                         : Colors.transparent,
                                     border: Border(
@@ -288,7 +287,7 @@ class MobileChatScreen extends StatelessWidget {
                                             BorderSide(color: Colors.grey))),
                                 child: Center(
                                   child: Text(
-                                    'Chat',
+                                    'Normal Chat',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -313,7 +312,7 @@ class MobileChatScreen extends StatelessWidget {
                                     horizontal: 15, vertical: 15),
                                 child: Center(
                                   child: Text(
-                                    'Completion',
+                                    'Unhinged',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -461,8 +460,7 @@ class MobileChatScreen extends StatelessWidget {
                   ],
                 ),
               );
-            } 
-            else
+            } else
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -489,10 +487,11 @@ class MobileChatScreen extends StatelessWidget {
                           );
                         }
                         if (state is UnderProgressState) {
-                                  return Center(
-                                    child: Text('This is under progress'),
-                                  );
-                                }
+                          return Center(
+                            child: Text('This is under progress'),
+                          );
+                        }
+
                         if (state is ChatLoadedState) {
                           return ListView.builder(
                               itemCount: state.chats.length,
@@ -515,36 +514,39 @@ class MobileChatScreen extends StatelessWidget {
                     fit: FlexFit.tight,
                     child: BlocBuilder<ChatBloc, AppState>(
                       builder: (context, state) {
-                        return Container(
-                          // color: Colors.white,
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Row(children: [
-                            Flexible(
-                              flex: 6,
-                              child: TextField(
-                                controller: _controller,
-                                keyboardType: TextInputType.multiline,
-                                onChanged: ((value) => search = value),
-                                onSubmitted: (val) {
-                                  _controller.text = "";
-                                  BlocProvider.of<ChatBloc>(context)
-                                      .add(FetchResultEvent(search));
-                                },
+                        if (state is ChatLoadedState) {
+                          return Container(
+                            // color: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Row(children: [
+                              Flexible(
+                                flex: 6,
+                                child: TextField(
+                                  controller: _controller,
+                                  keyboardType: TextInputType.multiline,
+                                  onChanged: ((value) => search = value),
+                                  onSubmitted: (val) {
+                                    _controller.text = "";
+                                    BlocProvider.of<ChatBloc>(context)
+                                        .add(FetchResultEvent(search));
+                                  },
+                                ),
                               ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: IconButton(
-                                icon: Icon(Icons.send),
-                                onPressed: () {
-                                  _controller.text = "";
-                                  BlocProvider.of<ChatBloc>(context)
-                                      .add(FetchResultEvent(search));
-                                },
+                              Flexible(
+                                flex: 1,
+                                child: IconButton(
+                                  icon: Icon(Icons.send),
+                                  onPressed: () {
+                                    _controller.text = "";
+                                    BlocProvider.of<ChatBloc>(context)
+                                        .add(FetchResultEvent(search));
+                                  },
+                                ),
                               ),
-                            ),
-                          ]),
-                        );
+                            ]),
+                          );
+                        }
+                        return SizedBox.shrink();
                       },
                     ))
               ],
