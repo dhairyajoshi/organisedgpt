@@ -39,7 +39,6 @@ dependencies:
   http: ^0.13.5
   url_launcher: ^6.1.10
   image_downloader_web: ^2.0.2
-  flutter_dotenv: ^5.0.2
   shared_preferences: ^2.1.0
 
 dev_dependencies:
@@ -65,8 +64,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - .env
+  # assets:
+  #   - .env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
