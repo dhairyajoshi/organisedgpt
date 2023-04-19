@@ -24,7 +24,7 @@ class DatabaseService {
       return data['choices'][0]['message']['content'];
     }
 
-    return 'some error occured';
+    return response.body;
   }
 
   Future<String> complete(String query) async {
