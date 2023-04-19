@@ -245,7 +245,224 @@ class MobileChatScreen extends StatelessWidget {
                   ],
                 ),
               );
-            } else
+            }
+            else if (state is UnderProgressState) {
+              return Drawer(
+                // Add a ListView to the drawer. This ensures the user can scroll
+                // through the options in the drawer if there isn't enough vertical
+                // space to fit everything.
+                child: ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.symmetric(vertical: 25,horizontal: 10), 
+                  children: [
+                    Text(
+                      'Preferences',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              BlocProvider.of<ChatBloc>(context)
+                                  .add(SelectOptionEvent(0));
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                decoration: BoxDecoration(
+                                    color: state.op == 0 
+                                        ? Color.fromARGB(255, 95, 95, 95)
+                                        : Colors.transparent,
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.grey))),
+                                child: Center(
+                                  child: Text(
+                                    'Chat',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              BlocProvider.of<ChatBloc>(context)
+                                  .add(SelectOptionEvent(1));
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: state.op == 1
+                                        ? Color.fromARGB(255, 95, 95, 95)
+                                        : Colors.transparent,
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.grey))),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Center(
+                                  child: Text(
+                                    'Completion',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              BlocProvider.of<ChatBloc>(context)
+                                  .add(SelectOptionEvent(2));
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: state.op == 2
+                                        ? Color.fromARGB(255, 95, 95, 95)
+                                        : Colors.transparent,
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.grey))),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Center(
+                                  child: Text(
+                                    'Image',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              BlocProvider.of<ChatBloc>(context)
+                                  .add(SelectOptionEvent(3));
+                            },
+                            child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: state.op == 3
+                                        ? Color.fromARGB(255, 95, 95, 95)
+                                        : Colors.transparent,
+                                    border: Border(
+                                        bottom:
+                                            BorderSide(color: Colors.grey))),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Center(
+                                  child: Text(
+                                    'Audio',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      child: Row(
+                        children: [
+                          Text('Change your API key',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          Icon(Icons.key)
+                        ],
+                      ),
+                      onTap: () {
+                        TextEditingController _kc = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Update your API key"),
+                              content: TextField(
+                                controller: _kc,
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel')),
+                                TextButton(
+                                    onPressed: () async {
+                                      final pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.setString('api', _kc.text);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Confirm')),
+                              ],
+                            );
+                            ;
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    InkWell(
+                      child: Row(
+                        children: [
+                          Text('Remove your API key',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          Icon(Icons.delete_outline)
+                        ],
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Are you sure?"),
+                              content: Text(
+                                  'This will delete all the conversations and log you out'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel')),
+                                TextButton(
+                                    onPressed: () async {
+                                      final pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.remove('api');
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  LoginScreen())));
+                                    },
+                                    child: Text('Confirm')),
+                              ],
+                            );
+                            ;
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            } 
+            else
               return Center(
                 child: CircularProgressIndicator(),
               );
@@ -271,6 +488,11 @@ class MobileChatScreen extends StatelessWidget {
                             child: CircularProgressIndicator(),
                           );
                         }
+                        if (state is UnderProgressState) {
+                                  return Center(
+                                    child: Text('This is under progress'),
+                                  );
+                                }
                         if (state is ChatLoadedState) {
                           return ListView.builder(
                               itemCount: state.chats.length,
