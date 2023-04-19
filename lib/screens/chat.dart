@@ -40,6 +40,7 @@ class ChatScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 25, horizontal: 10),
                           decoration: BoxDecoration(
+                            color: Color.fromRGBO(32,33,35, 1), 
                               border: Border(
                                   right: BorderSide(
                                       width: 1, color: Colors.white))),
