@@ -29,8 +29,13 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
         if (key == null) {
           emit(InputApiState());
         } else {
-          Navigator.of(event.context).pushReplacement(
-              MaterialPageRoute(builder: ((context) => ChatScreen())));
+          if (MediaQuery.of(event.context).size.width >= 1280) {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => ChatScreen())));
+          } else {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
+          }
         }
       },
     );
@@ -39,13 +44,12 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         final pref = await SharedPreferences.getInstance();
         pref.setString('api', event.api);
-        if(MediaQuery.of(event.context).size.width>=1280) {
+        if (MediaQuery.of(event.context).size.width >= 1280) {
           Navigator.of(event.context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => ChatScreen()))); 
-        } 
-        else{
+              MaterialPageRoute(builder: ((context) => ChatScreen())));
+        } else {
           Navigator.of(event.context).pushReplacement(
-            MaterialPageRoute(builder: ((context) => MobileChatScreen()))); 
+              MaterialPageRoute(builder: ((context) => MobileChatScreen())));
         }
       },
     );
