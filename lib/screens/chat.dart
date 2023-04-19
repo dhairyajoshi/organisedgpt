@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
+import 'package:organisedgpt/screens/login.dart';
 import 'package:organisedgpt/services/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -40,7 +41,7 @@ class ChatScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 25, horizontal: 10),
                           decoration: BoxDecoration(
-                            color: Color.fromRGBO(32,33,35, 1), 
+                              color: Color.fromRGBO(32, 33, 35, 1),
                               border: Border(
                                   right: BorderSide(
                                       width: 1, color: Colors.white))),
@@ -58,7 +59,7 @@ class ChatScreen extends StatelessWidget {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.8,
+                                    MediaQuery.of(context).size.height * 0.6,
                                 width: double.infinity,
                                 child: Column(
                                   mainAxisAlignment:
@@ -214,7 +215,53 @@ class ChatScreen extends StatelessWidget {
                                     },
                                   );
                                 },
-                              )
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              InkWell(
+                                child: Row(
+                                  children: [
+                                    Text('Remove your API key',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Icon(Icons.delete_outline)
+                                  ],
+                                ),
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text("Are you sure?"),
+                                        content: Text('This will delete all the conversations and log you out'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('Cancel')),
+                                          TextButton(
+                                              onPressed: () async {
+                                                final pref =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                pref.remove('api');
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            LoginScreen())));
+                                              },
+                                              child: Text('Confirm')),
+                                        ],
+                                      );
+                                      ;
+                                    },
+                                  );
+                                },
+                              ),
                             ],
                           ),
                           // color: Colors.green,
@@ -286,9 +333,10 @@ class ChatScreen extends StatelessWidget {
                                     ),
                                     Flexible(
                                       flex: 1,
-                                      child: IconButton(
+                                      child: IconButton( 
                                         icon: Icon(Icons.send),
                                         onPressed: () {
+                                          _controller.text = "";
                                           BlocProvider.of<ChatBloc>(context)
                                               .add(FetchResultEvent(search));
                                         },
