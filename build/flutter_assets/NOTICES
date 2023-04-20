@@ -7199,7 +7199,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 flutter_lints
-flutter_markdown
+flutter_markdown_selectionarea
 path_provider_linux
 path_provider_platform_interface
 path_provider_windows

@@ -52,15 +52,19 @@ class MobileChatScreen extends StatelessWidget {
                       'Temperature: ${state.temp}',
                       style: TextStyle(fontSize: 15),
                     ),
-                    Slider(
-                        min: 0,
-                        max: 1,
-                        divisions: 100,
-                        value: state.temp,
-                        onChanged: (val) {
-                          BlocProvider.of<ChatBloc>(context)
-                              .add(SetTempEvent(val));
-                        }),
+                    Tooltip(
+                      message:
+                          'What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.',
+                      child: Slider(
+                          min: 0,
+                          max: 1,
+                          divisions: 100,
+                          value: state.temp,
+                          onChanged: (val) {
+                            BlocProvider.of<ChatBloc>(context)
+                                .add(SetTempEvent(val));
+                          }),
+                    ),
                     SizedBox(
                       height: 5,
                     ),
@@ -68,16 +72,20 @@ class MobileChatScreen extends StatelessWidget {
                       'Max length: ${state.maxlength.toInt()}',
                       style: TextStyle(fontSize: 15),
                     ),
-                    Slider(
-                        min: 1,
-                        max: 4000,
-                        divisions: 800,
-                        value: state.maxlength,
-                        onChanged: (val) {
-                          print(val);
-                          BlocProvider.of<ChatBloc>(context)
-                              .add(SetLenEvent(val));
-                        }),
+                    Tooltip(
+                      message:
+                          'The maximum number of tokens to generate in the completion.The token count of your prompt plus max_tokens cannot exceed the model\'s context length',
+                      child: Slider(
+                          min: 1,
+                          max: 4000,
+                          divisions: 800,
+                          value: state.maxlength,
+                          onChanged: (val) {
+                            print(val);
+                            BlocProvider.of<ChatBloc>(context)
+                                .add(SetLenEvent(val));
+                          }),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       width: double.infinity,
