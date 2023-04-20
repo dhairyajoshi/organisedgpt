@@ -21,9 +21,7 @@ class DatabaseService {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data['choices'][0]['message']['content']
-          .replaceAll("'", "\\'")
-          .replaceAll('"', '\\"');
+      return data['choices'][0]['message']['content'];
     }
 
     return response.body;
@@ -51,8 +49,6 @@ class DatabaseService {
     final data = json.decode(response.body);
     if (response.statusCode == 200) {
       return data['choices'][0]['text'];
-          // .replaceAll("'", "\\'")
-          // .replaceAll('"', '\\"');
     }
 
     return response.body;

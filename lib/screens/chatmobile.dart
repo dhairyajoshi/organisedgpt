@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown_selectionarea/flutter_markdown.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
@@ -688,10 +689,15 @@ class Dialogue extends StatelessWidget {
               ],
             )
           else
-            SelectableText(
-              text.trim(),
-              style: TextStyle(fontSize: 18),
-            ),
+            Container(
+              alignment: Alignment.topLeft,
+                width: double.infinity,
+                child: SelectionArea(
+                    child: MarkdownBody(
+                  data: text.trim(), 
+                  styleSheet: MarkdownStyleSheet(
+                      textScaleFactor: 1.3, textAlign: WrapAlignment.start),
+                ))),
         ],
       ),
     );
