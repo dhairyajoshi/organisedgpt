@@ -17,10 +17,11 @@ class UnderProgressState extends AppState {
 class ChatLoadedState extends AppState {
   final List<Map<String, dynamic>> _chats;
   int op;
-  ChatLoadedState(this._chats, this.op);
+  double temp, maxlength;
+  ChatLoadedState(this.temp, this.maxlength, this._chats, this.op);
 
   @override
-  List<Object?> get props => [_chats];
+  List<Object?> get props => [_chats, temp, op];
 
   get chats => _chats;
 }
@@ -43,40 +44,56 @@ class DeleteChatEvent extends AppEvent {
   get idx => _idx;
 }
 
-class RegenChatEvent extends AppEvent{
+class RegenChatEvent extends AppEvent {
   final int _idx;
   RegenChatEvent(this._idx);
   get idx => _idx;
 }
 
+class SetTempEvent extends AppEvent {
+  double temp;
+  SetTempEvent(this.temp);
+}
+
+class SetLenEvent extends AppEvent {
+  double len;
+  SetLenEvent(this.len);
+}
+
 class ChatBloc extends Bloc<AppEvent, AppState> {
   List<List<Map<String, dynamic>>> allChats = [
     [
-      {'u': 1, "c": 'Ask any question...','a':0, 't': 0}
+      {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Start with any phrase...','a':0, 't': 0}
+      {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Give any description...','a':0, 't': 0}
+      {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Upload an audio...','a':0, 't': 0}
+      {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
     ]
   ];
 
   int op = 0;
+  double temp = 0, maxlength = 300;
   ChatBloc()
-      : super(ChatLoadedState([
-          const {'u': 1, "c": 'Ask any question...','a':0, 't': 0}
-        ], 0)) {
-    on<FetchResultEvent>(
+      : super(ChatLoadedState(
+            0.7,
+            300,
+            [
+              const {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
+            ],
+            0)) {
+    on<FetchResultEvent>( 
       (event, emit) async {
         if (event.query.trim() == "") return;
-        emit(ChatLoadingState()); 
-        allChats[op].add({'u': 0, 'c': event.query.trim(),'a':0, 't': 0});
-        allChats[op].add({'u': 1, 'c': 'Getting your answer...','a':0, 't': 0});
-        emit(ChatLoadedState(allChats[op], op));
+        emit(ChatLoadingState());
+        allChats[op].add({'u': 0, 'c': event.query.trim(), 'a': 0, 't': 0});
+        allChats[op]
+            .add({'u': 1, 'c': 'Getting your answer...', 'a': 0, 't': 0});
+        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
 
         String res;
         switch (op) {
@@ -85,11 +102,12 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             for (int i = 0; i < allChats[op].length - 1; i++) {
               fquery += allChats[op][i]['c'] + '\n';
             }
-            res = await DatabaseService().chat(fquery);
+            res = await DatabaseService().chat(fquery, temp, maxlength.toInt());
             break;
 
           case 1:
-            res = await DatabaseService().complete(event.query);
+            res = await DatabaseService()
+                .complete(event.query, temp, maxlength.toInt());
             break;
 
           case 2:
@@ -97,15 +115,16 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             break;
 
           default:
-            res = await DatabaseService().chat(event.query);
+            res = await DatabaseService()
+                .chat(event.query, temp, maxlength.toInt());
             break;
         }
         allChats[op].removeLast();
         op == 2
-            ? allChats[op].add({'u': 1, 'c': res,'a':1, 't': 1})
-            : allChats[op].add({'u': 1, 'c': res,'a':1, 't': 0});
+            ? allChats[op].add({'u': 1, 'c': res, 'a': 1, 't': 1})
+            : allChats[op].add({'u': 1, 'c': res, 'a': 1, 't': 0});
         emit(ChatLoadingState());
-        emit(ChatLoadedState(allChats[op], op));
+        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
       },
     );
 
@@ -116,7 +135,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         if (op == 3) {
           emit(UnderProgressState(op));
         } else {
-          emit(ChatLoadedState(allChats[op], op));
+          emit(ChatLoadedState(temp, maxlength, allChats[op], op));
         }
       },
     );
@@ -124,18 +143,35 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<DeleteChatEvent>(
       (event, emit) {
         emit(ChatLoadingState());
-        allChats[op].removeRange(event.idx, allChats[op].length); 
-        
-        emit(ChatLoadedState(allChats[op], op));
+        allChats[op].removeRange(event.idx, allChats[op].length);
+
+        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
       },
     );
 
-    on<RegenChatEvent>((event, emit) { 
-      emit(ChatLoadingState());
-      allChats[op].removeRange(event.idx, allChats[op].length); 
-      String query = allChats[op].last['c'];
-      allChats[op].removeLast();
-      add(FetchResultEvent(query));
-    },);
+    on<RegenChatEvent>(
+      (event, emit) {
+        emit(ChatLoadingState());
+        allChats[op].removeRange(event.idx, allChats[op].length);
+        String query = allChats[op].last['c'];
+        allChats[op].removeLast();
+        add(FetchResultEvent(query));
+      },
+    );
+
+    on<SetTempEvent>(
+      (event, emit) {
+        temp = event.temp;
+        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
+      },
+    );
+
+    on<SetLenEvent>(
+      (event, emit) {
+        emit(ChatLoadingState());
+        maxlength = event.len;
+        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
+      },
+    );
   }
 }

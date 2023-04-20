@@ -46,14 +46,47 @@ class MobileChatScreen extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
+                    Text(
+                      'Temperature: ${state.temp}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Slider(
+                        min: 0,
+                        max: 1,
+                        divisions: 100,
+                        value: state.temp,
+                        onChanged: (val) {
+                          BlocProvider.of<ChatBloc>(context)
+                              .add(SetTempEvent(val));
+                        }),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: 5,
+                    ),
+                    Text(
+                      'Max length: ${state.maxlength.toInt()}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Slider(
+                        min: 1,
+                        max: 4000,
+                        divisions: 800,
+                        value: state.maxlength,
+                        onChanged: (val) {
+                          print(val);
+                          BlocProvider.of<ChatBloc>(context)
+                              .add(SetLenEvent(val));
+                        }),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.5,
                       width: double.infinity,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      child: ListView(
+                        // mainAxisAlignment:
+                        //     MainAxisAlignment.spaceEvenly,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        shrinkWrap: true,
+
                         children: [
                           InkWell(
                             onTap: () {
@@ -62,6 +95,7 @@ class MobileChatScreen extends StatelessWidget {
                             },
                             child: Container(
                                 width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 15),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 15),
                                 decoration: BoxDecoration(
@@ -87,6 +121,7 @@ class MobileChatScreen extends StatelessWidget {
                             },
                             child: Container(
                                 width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 15),
                                 decoration: BoxDecoration(
                                     color: state.op == 1
                                         ? Color.fromARGB(255, 95, 95, 95)
@@ -112,6 +147,7 @@ class MobileChatScreen extends StatelessWidget {
                             },
                             child: Container(
                                 width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 15),
                                 decoration: BoxDecoration(
                                     color: state.op == 2
                                         ? Color.fromARGB(255, 95, 95, 95)
@@ -137,6 +173,7 @@ class MobileChatScreen extends StatelessWidget {
                             },
                             child: Container(
                                 width: double.infinity,
+                                margin: EdgeInsets.symmetric(vertical: 15),
                                 decoration: BoxDecoration(
                                     color: state.op == 3
                                         ? Color.fromARGB(255, 95, 95, 95)
@@ -690,11 +727,11 @@ class Dialogue extends StatelessWidget {
             )
           else
             Container(
-              alignment: Alignment.topLeft,
+                alignment: Alignment.topLeft,
                 width: double.infinity,
                 child: SelectionArea(
                     child: MarkdownBody(
-                  data: text.trim(), 
+                  data: text.trim(),
                   styleSheet: MarkdownStyleSheet(
                       textScaleFactor: 1.3, textAlign: WrapAlignment.start),
                 ))),

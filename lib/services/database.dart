@@ -3,12 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
-  Future<String> chat(String query) async {
+  Future<String> chat(String query, double temp, int len) async {
     final body = json.encode({
       "model": "gpt-3.5-turbo",
       "messages": [
         {"role": "user", "content": query}
       ],
+      "max_tokens": len,
+      "temperature": temp,
     });
     final pref = await SharedPreferences.getInstance();
     final response = await http.post(
@@ -27,12 +29,12 @@ class DatabaseService {
     return response.body;
   }
 
-  Future<String> complete(String query) async {
+  Future<String> complete(String query, double temp, int len) async {
     final body = json.encode({
       "model": "text-davinci-003",
       "prompt": query,
-      "max_tokens": 2700,
-      "temperature": 1,
+      "max_tokens": len,
+      "temperature": temp,
       "top_p": 1,
       "n": 1,
       "stream": false,
