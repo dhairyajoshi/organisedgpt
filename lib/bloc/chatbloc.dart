@@ -7,7 +7,7 @@ import 'package:organisedgpt/services/database.dart';
 
 class ChatLoadingState extends AppState {}
 
-class UnderProgressState extends AppState{
+class UnderProgressState extends AppState {
   int _op;
   UnderProgressState(this._op);
 
@@ -37,32 +37,45 @@ class SelectOptionEvent extends AppEvent {
   get op => _op;
 }
 
+class DeleteChatEvent extends AppEvent {
+  final int _idx;
+  DeleteChatEvent(this._idx);
+  get idx => _idx;
+}
+
+class RegenChatEvent extends AppEvent{
+  final int _idx;
+  RegenChatEvent(this._idx);
+  get idx => _idx;
+}
+
 class ChatBloc extends Bloc<AppEvent, AppState> {
   List<List<Map<String, dynamic>>> allChats = [
     [
-      {'u': 1, "c": 'Ask any question...', 't': 0}
+      {'u': 1, "c": 'Ask any question...','a':0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Start with any phrase...', 't': 0}
+      {'u': 1, "c": 'Start with any phrase...','a':0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Give any description...', 't': 0}
+      {'u': 1, "c": 'Give any description...','a':0, 't': 0}
     ],
     [
-      {'u': 1, "c": 'Upload an audio...', 't': 0}
+      {'u': 1, "c": 'Upload an audio...','a':0, 't': 0}
     ]
   ];
 
   int op = 0;
   ChatBloc()
       : super(ChatLoadedState([
-          const {'u': 1, "c": 'Ask any question...', 't': 0}
+          const {'u': 1, "c": 'Ask any question...','a':0, 't': 0}
         ], 0)) {
     on<FetchResultEvent>(
       (event, emit) async {
-        emit(ChatLoadingState());
-        allChats[op].add({'u': 0, 'c': event.query, 't': 0});
-        allChats[op].add({'u': 1, 'c': 'Getting your answer...', 't': 0});
+        if (event.query.trim() == "") return;
+        emit(ChatLoadingState()); 
+        allChats[op].add({'u': 0, 'c': event.query.trim(),'a':0, 't': 0});
+        allChats[op].add({'u': 1, 'c': 'Getting your answer...','a':0, 't': 0});
         emit(ChatLoadedState(allChats[op], op));
 
         String res;
@@ -89,8 +102,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         }
         allChats[op].removeLast();
         op == 2
-            ? allChats[op].add({'u': 1, 'c': res, 't': 1})
-            : allChats[op].add({'u': 1, 'c': res, 't': 0});
+            ? allChats[op].add({'u': 1, 'c': res,'a':1, 't': 1})
+            : allChats[op].add({'u': 1, 'c': res,'a':1, 't': 0});
         emit(ChatLoadingState());
         emit(ChatLoadedState(allChats[op], op));
       },
@@ -100,13 +113,29 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         op = event.op;
-        if(op==3){
+        if (op == 3) {
           emit(UnderProgressState(op));
-        }
-        else {
+        } else {
           emit(ChatLoadedState(allChats[op], op));
         }
       },
     );
+
+    on<DeleteChatEvent>(
+      (event, emit) {
+        emit(ChatLoadingState());
+        allChats[op].removeRange(event.idx, allChats[op].length); 
+        
+        emit(ChatLoadedState(allChats[op], op));
+      },
+    );
+
+    on<RegenChatEvent>((event, emit) { 
+      emit(ChatLoadingState());
+      allChats[op].removeRange(event.idx, allChats[op].length); 
+      String query = allChats[op].last['c'];
+      allChats[op].removeLast();
+      add(FetchResultEvent(query));
+    },);
   }
 }

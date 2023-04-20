@@ -10,7 +10,7 @@ class DatabaseService {
         {"role": "user", "content": query}
       ],
     });
-    final pref  =await SharedPreferences.getInstance();
+    final pref = await SharedPreferences.getInstance();
     final response = await http.post(
         Uri.parse('https://api.openai.com/v1/chat/completions'),
         body: body,
@@ -21,7 +21,9 @@ class DatabaseService {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return data['choices'][0]['message']['content'];
+      return data['choices'][0]['message']['content']
+          .replaceAll("'", "\\'")
+          .replaceAll('"', '\\"');
     }
 
     return response.body;
@@ -37,7 +39,7 @@ class DatabaseService {
       "n": 1,
       "stream": false,
     });
-    final pref  =await SharedPreferences.getInstance();
+    final pref = await SharedPreferences.getInstance();
     final response = await http.post(
         Uri.parse('https://api.openai.com/v1/completions'),
         body: body,
@@ -46,9 +48,11 @@ class DatabaseService {
           'content-type': 'application/json'
         });
     //
-      final data = json.decode(response.body);
+    final data = json.decode(response.body);
     if (response.statusCode == 200) {
       return data['choices'][0]['text'];
+          // .replaceAll("'", "\\'")
+          // .replaceAll('"', '\\"');
     }
 
     return response.body;
@@ -56,7 +60,7 @@ class DatabaseService {
 
   Future<String> image(String query) async {
     final body = json.encode({"prompt": query, "n": 1, "size": "1024x1024"});
-    final pref  =await SharedPreferences.getInstance();
+    final pref = await SharedPreferences.getInstance();
     final response = await http.post(
         Uri.parse('https://api.openai.com/v1/images/generations'),
         body: body,
@@ -80,7 +84,7 @@ class DatabaseService {
         {"role": "user", "content": query}
       ],
     });
-    final pref  =await SharedPreferences.getInstance();
+    final pref = await SharedPreferences.getInstance();
     final response = await http.post(
         Uri.parse('https://api.openai.com/v1/chat/completions'),
         body: body,
@@ -89,7 +93,7 @@ class DatabaseService {
           'content-type': 'application/json'
         });
 
-      final data = json.decode(response.body);
+    final data = json.decode(response.body);
     if (response.statusCode == 200) {
       return data['choices'][0]['message']['content'];
     }

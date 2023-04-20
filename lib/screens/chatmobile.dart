@@ -499,9 +499,12 @@ class MobileChatScreen extends StatelessWidget {
                               itemBuilder: (context, idx) {
                                 final ridx = state.chats.length - 1 - idx;
                                 return Dialogue(
+                                    ridx,
                                     state.chats[ridx]['u'],
                                     state.chats[ridx]['c'],
-                                    state.chats[ridx]['t']);
+                                    state.chats[ridx]['t'],
+                                    state.chats[ridx]['a'],
+                                    context);
                               });
                         }
                         return Center(
@@ -529,6 +532,7 @@ class MobileChatScreen extends StatelessWidget {
                                     _controller.text = "";
                                     BlocProvider.of<ChatBloc>(context)
                                         .add(FetchResultEvent(search));
+                                    search = "";
                                   },
                                 ),
                               ),
@@ -540,6 +544,7 @@ class MobileChatScreen extends StatelessWidget {
                                     _controller.text = "";
                                     BlocProvider.of<ChatBloc>(context)
                                         .add(FetchResultEvent(search));
+                                    search = "";
                                   },
                                 ),
                               ),
@@ -560,9 +565,10 @@ class MobileChatScreen extends StatelessWidget {
 }
 
 class Dialogue extends StatelessWidget {
-  Dialogue(this.u, this.text, this.t, {super.key});
+  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key});
   String text;
-  int u, t;
+  int i, u, t, a;
+  BuildContext ctx;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -579,13 +585,88 @@ class Dialogue extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          u == 0
-              ? Text(
-                  'User:',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                )
-              : Text('GPT:',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              u == 0
+                  ? Text(
+                      'User:',
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    )
+                  : Text('GPT:',
+                      style:
+                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  if (u == 0)
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Are you sure?"),
+                                content: Text(
+                                    'This will delete all the following chats too'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel')),
+                                  TextButton(
+                                      onPressed: () {
+                                        BlocProvider.of<ChatBloc>(ctx)
+                                            .add(DeleteChatEvent(i));
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Confirm')),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.delete_outlined,
+                          size: 17,
+                        )),
+                  if (u == 1 && a == 1)
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Are you sure?"),
+                                content: Text(
+                                    'This will delete all the following chats too'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel')),
+                                  TextButton(
+                                      onPressed: () {
+                                        BlocProvider.of<ChatBloc>(ctx)
+                                            .add(RegenChatEvent(i));
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Confirm')),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.refresh,
+                          size: 17,
+                        )),
+                ],
+              )
+            ],
+          ),
           SizedBox(
             height: 10,
           ),
