@@ -22579,7 +22579,8 @@ mW:function mW(a){this.a=a},
 mV:function mV(a){this.a=a},
 ob:function ob(a,b,c,d,e,f,g,h){var _=this
 _.at=a
-_.ay=_.ax=0
+_.ax=0
+_.ay=0.7
 _.ch=300
 _.e=b
 _.f=c

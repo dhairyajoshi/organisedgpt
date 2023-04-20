@@ -77,7 +77,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
   ];
 
   int op = 0;
-  double temp = 0, maxlength = 300;
+  double temp = 0.7, maxlength = 300;
   ChatBloc()
       : super(ChatLoadedState(
             0.7,
