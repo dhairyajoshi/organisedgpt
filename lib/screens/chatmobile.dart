@@ -115,7 +115,7 @@ class MobileChatScreen extends StatelessWidget {
                                             BorderSide(color: Colors.grey))),
                                 child: Center(
                                   child: Text(
-                                    'Normal Chat',
+                                    'ChatGPT', 
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -141,7 +141,7 @@ class MobileChatScreen extends StatelessWidget {
                                     horizontal: 15, vertical: 15),
                                 child: Center(
                                   child: Text(
-                                    'Unhinged',
+                                    'GPT-3',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -333,7 +333,7 @@ class MobileChatScreen extends StatelessWidget {
                                             BorderSide(color: Colors.grey))),
                                 child: Center(
                                   child: Text(
-                                    'Normal Chat',
+                                    'ChatGPT',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -358,7 +358,7 @@ class MobileChatScreen extends StatelessWidget {
                                     horizontal: 15, vertical: 15),
                                 child: Center(
                                   child: Text(
-                                    'Unhinged',
+                                    'GPT-3',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),

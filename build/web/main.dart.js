@@ -79068,42 +79068,42 @@ A.Zw.prototype={
 $1(a){return $.aBu()},
 $S:156}
 A.Zt.prototype={
-$2(a1,a2){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=null,d="Preferences",c="Normal Chat",b="Unhinged",a="Change your API key",a0="Remove your API key"
-if(a2 instanceof A.hc)return A.cm(A.lQ(),e,e)
-else if(a2 instanceof A.eA){s=A.kl(32,33,35,1)
+$2(a,a0){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=null,d="Preferences",c="Change your API key",b="Remove your API key"
+if(a0 instanceof A.hc)return A.cm(A.lQ(),e,e)
+else if(a0 instanceof A.eA){s=A.kl(32,33,35,1)
 r=A.ac(d,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e)
 q=A.c5(e,15,e)
-p=a2.c
+p=a0.c
 o=A.ac("Temperature: "+A.h(p),e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,15,e,e,e,e,e,!0,e,e,e,e,e,e,e,e),e,e)
-p=A.Of(A.aev(100,1,0,new A.Zm(a1),p),u.i)
+p=A.Of(A.aev(100,1,0,new A.Zm(a),p),u.i)
 n=A.c5(e,5,e)
-m=a2.d
+m=a0.d
 l=A.ac("Max length: "+B.d.dt(m),e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,15,e,e,e,e,e,!0,e,e,e,e,e,e,e,e),e,e)
-m=A.Of(A.aev(800,4000,1,new A.Zn(a1),m),u.t)
-k=a1.O(t.w).f
-j=a2.b
+m=A.Of(A.aev(800,4000,1,new A.Zn(a),m),u.t)
+k=a.O(t.w).f
+j=a0.b
 i=j===0?A.am(255,95,95,95):B.u
-i=A.cB(!1,!0,A.bK(e,A.cm(A.ac(c,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(i,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zo(a1),e,e,e,e)
+i=A.cB(!1,!0,A.bK(e,A.cm(A.ac("ChatGPT",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(i,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zo(a),e,e,e,e)
 h=j===1?A.am(255,95,95,95):B.u
-h=A.cB(!1,!0,A.bK(e,A.cm(A.ac(b,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(h,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zp(a1),e,e,e,e)
+h=A.cB(!1,!0,A.bK(e,A.cm(A.ac("GPT-3",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(h,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zp(a),e,e,e,e)
 g=j===2?A.am(255,95,95,95):B.u
-g=A.cB(!1,!0,A.bK(e,A.cm(A.ac("Image",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(g,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zq(a1),e,e,e,e)
+g=A.cB(!1,!0,A.bK(e,A.cm(A.ac("Image",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(g,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zq(a),e,e,e,e)
 j=j===3?A.am(255,95,95,95):B.u
 f=t.p
-return A.bK(e,A.f1(A.a([r,q,o,p,n,l,m,A.c5(A.a6l(A.a([i,h,g,A.cB(!1,!0,A.bK(e,A.cm(A.ac("Audio",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(j,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zr(a1),e,e,e,e)],f),e,!0),k.a.b*0.5,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(a,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eF,e,e)],f),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zs(a1),e,e,e,e),A.c5(e,15,e),A.cB(!1,!0,A.eL(A.a([A.ac(a0,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eE,e,e)],f),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Ze(a1),e,e,e,e)],f),B.bk,B.dw,B.S),e,e,new A.bq(s,e,new A.bu(B.i,new A.bn(B.l,1,B.A,-1),B.i,B.i),e,e,e,B.w),e,e,new A.aa(10,25,10,25),e)}else if(a2 instanceof A.ng){s=A.kl(32,33,35,1)
+return A.bK(e,A.f1(A.a([r,q,o,p,n,l,m,A.c5(A.a6l(A.a([i,h,g,A.cB(!1,!0,A.bK(e,A.cm(A.ac("Audio",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(j,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zr(a),e,e,e,e)],f),e,!0),k.a.b*0.5,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(c,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eF,e,e)],f),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zs(a),e,e,e,e),A.c5(e,15,e),A.cB(!1,!0,A.eL(A.a([A.ac(b,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eE,e,e)],f),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Ze(a),e,e,e,e)],f),B.bk,B.dw,B.S),e,e,new A.bq(s,e,new A.bu(B.i,new A.bn(B.l,1,B.A,-1),B.i,B.i),e,e,e,B.w),e,e,new A.aa(10,25,10,25),e)}else if(a0 instanceof A.ng){s=A.kl(32,33,35,1)
 r=A.ac(d,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e)
 q=A.c5(e,10,e)
-p=a1.O(t.w).f
-o=a2.a
+p=a.O(t.w).f
+o=a0.a
 n=o===0?A.am(255,95,95,95):B.u
-n=A.cB(!1,!0,A.bK(e,A.cm(A.ac(c,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(n,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zf(a1),e,e,e,e)
+n=A.cB(!1,!0,A.bK(e,A.cm(A.ac("ChatGPT",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(n,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zf(a),e,e,e,e)
 m=o===1?A.am(255,95,95,95):B.u
-m=A.cB(!1,!0,A.bK(e,A.cm(A.ac(b,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(m,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zg(a1),e,e,e,e)
+m=A.cB(!1,!0,A.bK(e,A.cm(A.ac("GPT-3",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(m,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zg(a),e,e,e,e)
 l=o===2?A.am(255,95,95,95):B.u
-l=A.cB(!1,!0,A.bK(e,A.cm(A.ac("Image",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(l,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zh(a1),e,e,e,e)
+l=A.cB(!1,!0,A.bK(e,A.cm(A.ac("Image",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(l,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zh(a),e,e,e,e)
 o=o===3?A.am(255,95,95,95):B.u
 k=t.p
-return A.bK(e,A.f1(A.a([r,q,A.c5(A.f1(A.a([n,m,l,A.cB(!1,!0,A.bK(e,A.cm(A.ac("Audio",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(o,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zi(a1),e,e,e,e)],k),B.V,B.ip,B.S),p.a.b*0.6,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(a,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eF,e,e)],k),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zj(a1),e,e,e,e),A.c5(e,15,e),A.cB(!1,!0,A.eL(A.a([A.ac(a0,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eE,e,e)],k),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zk(a1),e,e,e,e)],k),B.bk,B.dw,B.S),e,e,new A.bq(s,e,new A.bu(B.i,new A.bn(B.l,1,B.A,-1),B.i,B.i),e,e,e,B.w),e,e,new A.aa(10,25,10,25),e)}else return A.cm(A.lQ(),e,e)},
+return A.bK(e,A.f1(A.a([r,q,A.c5(A.f1(A.a([n,m,l,A.cB(!1,!0,A.bK(e,A.cm(A.ac("Audio",e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),e,e),e,e,new A.bq(o,e,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),e,e,e,B.w),e,e,new A.aa(15,15,15,15),1/0),e,!0,e,e,e,e,e,e,e,e,e,new A.Zi(a),e,e,e,e)],k),B.V,B.ip,B.S),p.a.b*0.6,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(c,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eF,e,e)],k),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zj(a),e,e,e,e),A.c5(e,15,e),A.cB(!1,!0,A.eL(A.a([A.ac(b,e,e,e,A.bb(e,e,e,e,e,e,e,e,e,e,e,20,e,e,B.v,e,e,!0,e,e,e,e,e,e,e,e),e,e),A.eF(B.eE,e,e)],k),B.V,B.L,B.S,e),e,!0,e,e,e,e,e,e,e,e,e,new A.Zk(a),e,e,e,e)],k),B.bk,B.dw,B.S),e,e,new A.bq(s,e,new A.bu(B.i,new A.bn(B.l,1,B.A,-1),B.i,B.i),e,e,e,B.w),e,e,new A.aa(10,25,10,25),e)}else return A.cm(A.lQ(),e,e)},
 $S:38}
 A.Zm.prototype={
 $1(a){A.cw(this.a,t.g).D(0,new A.mW(a))},
@@ -79310,40 +79310,40 @@ A.a7G.prototype={
 $1(a){return A.aus()},
 $S:156}
 A.a7D.prototype={
-$2(a0,a1){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=null,e="Preferences",d="Normal Chat",c="Unhinged",b="Change your API key",a="Remove your API key"
-if(a1 instanceof A.hc)return A.cm(A.lQ(),f,f)
-else if(a1 instanceof A.eA){s=A.ac(e,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f)
+$2(a,b){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=null,e="Preferences",d="Change your API key",c="Remove your API key"
+if(b instanceof A.hc)return A.cm(A.lQ(),f,f)
+else if(b instanceof A.eA){s=A.ac(e,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f)
 r=A.c5(f,15,f)
-q=a1.c
+q=b.c
 p=A.ac("Temperature: "+A.h(q),f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,15,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f)
-q=A.Of(A.aev(100,1,0,new A.a7w(a0),q),u.i)
+q=A.Of(A.aev(100,1,0,new A.a7w(a),q),u.i)
 o=A.c5(f,5,f)
-n=a1.d
+n=b.d
 m=A.ac("Max length: "+B.d.dt(n),f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,15,f,f,f,f,f,!0,f,f,f,f,f,f,f,f),f,f)
-n=A.Of(A.aev(800,4000,1,new A.a7x(a0),n),u.t)
-l=a0.O(t.w).f
-k=a1.b
+n=A.Of(A.aev(800,4000,1,new A.a7x(a),n),u.t)
+l=a.O(t.w).f
+k=b.b
 j=k===0?A.am(255,95,95,95):B.u
-j=A.cB(!1,!0,A.bK(f,A.cm(A.ac(d,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(j,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7y(a0),f,f,f,f)
+j=A.cB(!1,!0,A.bK(f,A.cm(A.ac("ChatGPT",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(j,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7y(a),f,f,f,f)
 i=k===1?A.am(255,95,95,95):B.u
-i=A.cB(!1,!0,A.bK(f,A.cm(A.ac(c,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(i,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7z(a0),f,f,f,f)
+i=A.cB(!1,!0,A.bK(f,A.cm(A.ac("GPT-3",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(i,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7z(a),f,f,f,f)
 h=k===2?A.am(255,95,95,95):B.u
-h=A.cB(!1,!0,A.bK(f,A.cm(A.ac("Image",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(h,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7A(a0),f,f,f,f)
+h=A.cB(!1,!0,A.bK(f,A.cm(A.ac("Image",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(h,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7A(a),f,f,f,f)
 k=k===3?A.am(255,95,95,95):B.u
 g=t.p
-return A.auS(A.a6l(A.a([s,r,p,q,o,m,n,A.c5(A.a6l(A.a([j,i,h,A.cB(!1,!0,A.bK(f,A.cm(A.ac("Audio",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(k,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7B(a0),f,f,f,f)],g),f,!0),l.a.b*0.5,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(b,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eF,f,f)],g),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7C(a0),f,f,f,f),A.c5(f,15,f),A.cB(!1,!0,A.eL(A.a([A.ac(a,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eE,f,f)],g),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7o(a0),f,f,f,f)],g),new A.aa(10,25,10,25),!1))}else if(a1 instanceof A.ng){s=A.ac(e,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f)
+return A.auS(A.a6l(A.a([s,r,p,q,o,m,n,A.c5(A.a6l(A.a([j,i,h,A.cB(!1,!0,A.bK(f,A.cm(A.ac("Audio",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(k,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,new A.aa(0,15,0,15),new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7B(a),f,f,f,f)],g),f,!0),l.a.b*0.5,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(d,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eF,f,f)],g),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7C(a),f,f,f,f),A.c5(f,15,f),A.cB(!1,!0,A.eL(A.a([A.ac(c,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eE,f,f)],g),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7o(a),f,f,f,f)],g),new A.aa(10,25,10,25),!1))}else if(b instanceof A.ng){s=A.ac(e,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f)
 r=A.c5(f,10,f)
-q=a0.O(t.w).f
-p=a1.a
+q=a.O(t.w).f
+p=b.a
 o=p===0?A.am(255,95,95,95):B.u
-o=A.cB(!1,!0,A.bK(f,A.cm(A.ac(d,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(o,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7p(a0),f,f,f,f)
+o=A.cB(!1,!0,A.bK(f,A.cm(A.ac("ChatGPT",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(o,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7p(a),f,f,f,f)
 n=p===1?A.am(255,95,95,95):B.u
-n=A.cB(!1,!0,A.bK(f,A.cm(A.ac(c,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(n,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7q(a0),f,f,f,f)
+n=A.cB(!1,!0,A.bK(f,A.cm(A.ac("GPT-3",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(n,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7q(a),f,f,f,f)
 m=p===2?A.am(255,95,95,95):B.u
-m=A.cB(!1,!0,A.bK(f,A.cm(A.ac("Image",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(m,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7r(a0),f,f,f,f)
+m=A.cB(!1,!0,A.bK(f,A.cm(A.ac("Image",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(m,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7r(a),f,f,f,f)
 p=p===3?A.am(255,95,95,95):B.u
 l=t.p
-return A.auS(A.a6l(A.a([s,r,A.c5(A.f1(A.a([o,n,m,A.cB(!1,!0,A.bK(f,A.cm(A.ac("Audio",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(p,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7s(a0),f,f,f,f)],l),B.V,B.ip,B.S),q.a.b*0.6,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(b,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eF,f,f)],l),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7t(a0),f,f,f,f),A.c5(f,15,f),A.cB(!1,!0,A.eL(A.a([A.ac(a,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eE,f,f)],l),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7u(a0),f,f,f,f)],l),new A.aa(10,25,10,25),!1))}else return A.cm(A.lQ(),f,f)},
+return A.auS(A.a6l(A.a([s,r,A.c5(A.f1(A.a([o,n,m,A.cB(!1,!0,A.bK(f,A.cm(A.ac("Audio",f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),f,f),f,f,new A.bq(p,f,new A.bu(B.i,B.i,new A.bn(B.av,1,B.A,-1),B.i),f,f,f,B.w),f,f,new A.aa(15,15,15,15),1/0),f,!0,f,f,f,f,f,f,f,f,f,new A.a7s(a),f,f,f,f)],l),B.V,B.ip,B.S),q.a.b*0.6,1/0),A.cB(!1,!0,A.eL(A.a([A.ac(d,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eF,f,f)],l),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7t(a),f,f,f,f),A.c5(f,15,f),A.cB(!1,!0,A.eL(A.a([A.ac(c,f,f,f,A.bb(f,f,f,f,f,f,f,f,f,f,f,20,f,f,B.v,f,f,!0,f,f,f,f,f,f,f,f),f,f),A.eF(B.eE,f,f)],l),B.V,B.L,B.S,f),f,!0,f,f,f,f,f,f,f,f,f,new A.a7u(a),f,f,f,f)],l),new A.aa(10,25,10,25),!1))}else return A.cm(A.lQ(),f,f)},
 $S:38}
 A.a7w.prototype={
 $1(a){A.cw(this.a,t.g).D(0,new A.mW(a))},
