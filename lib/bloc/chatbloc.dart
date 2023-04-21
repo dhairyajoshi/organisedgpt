@@ -27,9 +27,9 @@ class ChatLoadedState extends AppState {
 }
 
 class ImageGenerationState extends AppState {
-  int _n, op;
+  int _n, op, sz;
   final List<Map<String, dynamic>> _chats;
-  ImageGenerationState(this._n, this._chats, this.op);
+  ImageGenerationState(this._n, this._chats, this.op, this.sz);
 
   @override
   List<Object?> get props => [_chats, _n];
@@ -72,6 +72,11 @@ class SetNEvent extends AppEvent {
   SetNEvent(this.n);
 }
 
+class SetSzEvent extends AppEvent {
+  int sz;
+  SetSzEvent(this.sz);
+}
+
 class SetLenEvent extends AppEvent {
   double len;
   SetLenEvent(this.len);
@@ -93,7 +98,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     ]
   ];
 
-  int op = 0;
+  int op = 0, sz = 0;
   double temp = 0.7, maxlength = 300, n = 1;
   ChatBloc()
       : super(ChatLoadedState(
@@ -110,7 +115,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         allChats[op].add({'u': 0, 'c': event.query.trim(), 'a': 0, 't': 0});
         allChats[op]
             .add({'u': 1, 'c': 'Getting your answer...', 'a': 0, 't': 0});
-        emit(ChatLoadedState(temp, maxlength, allChats[op], op));
+        op == 2
+            ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
+            : emit(ChatLoadedState(temp, maxlength, allChats[op], op));
 
         String res = "";
         List<Map<String, dynamic>> imres = [];
@@ -129,7 +136,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             break;
 
           case 2:
-            imres = await DatabaseService().image(event.query, n.toInt());
+            imres = await DatabaseService().image(event.query, n.toInt(),sz); 
             break;
 
           default:
@@ -142,8 +149,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             ? allChats[op] = allChats[op] + imres
             : allChats[op].add({'u': 1, 'c': res, 'a': 1, 't': 0});
         emit(ChatLoadingState());
+        
         op == 2
-            ? emit(ImageGenerationState(n.toInt(), allChats[op], op))
+            ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
             : emit(ChatLoadedState(temp, maxlength, allChats[op], op));
       },
     );
@@ -153,7 +161,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         emit(ChatLoadingState());
         op = event.op;
         if (op == 2) {
-          emit(ImageGenerationState(n.toInt(), allChats[op], op));
+          emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
         } else if (op == 3) {
           emit(UnderProgressState(op));
         } else {
@@ -200,7 +208,15 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         n = event.n;
-        emit(ImageGenerationState(n.toInt(), allChats[op], op));
+        emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
+      },
+    );
+
+    on<SetSzEvent>(
+      (event, emit) {
+        emit(ChatLoadingState());
+        sz = event.sz;
+        emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
       },
     );
   }

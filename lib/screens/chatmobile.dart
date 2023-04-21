@@ -34,12 +34,21 @@ class MobileChatScreen extends StatelessWidget {
               } else if (state is ImageGenerationState) {
                 return Drawer(
                   child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10), 
+                    padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                     children: [
-                      Text(
-                        'Preferences',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.arrow_back)),
+                          Text(
+                            'Preferences',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 15,
@@ -60,6 +69,47 @@ class MobileChatScreen extends StatelessWidget {
                               BlocProvider.of<ChatBloc>(context)
                                   .add(SetNEvent(val));
                             }),
+                      ),
+                      Text('Images size:', style: TextStyle(fontSize: 15)),
+                      Row(
+                        children: [
+                          Radio(
+                              value: 0,
+                              groupValue: state.sz,
+                              onChanged: (val) {
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(SetSzEvent(0));
+                              }),
+                          Text(
+                            '256x256',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Radio(
+                              value: 1,
+                              groupValue: state.sz,
+                              onChanged: (val) {
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(SetSzEvent(1));
+                              }),
+                          Text('512x512', style: TextStyle(fontSize: 12)),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Radio(
+                              value: 2,
+                              groupValue: state.sz,
+                              onChanged: (val) {
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(SetSzEvent(2));
+                              }),
+                          Text('1024x1024', style: TextStyle(fontSize: 12)),
+                          SizedBox(
+                            width: 2,
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.5,
@@ -275,10 +325,19 @@ class MobileChatScreen extends StatelessWidget {
                     // Important: Remove any padding from the ListView.
                     padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
                     children: [
-                      Text(
-                        'Preferences',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.arrow_back)),
+                          Text(
+                            'Preferences',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 15,

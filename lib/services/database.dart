@@ -56,8 +56,9 @@ class DatabaseService {
     return response.body;
   }
 
-  Future<List<Map<String,dynamic>>> image(String query,int n) async {
-    final body = json.encode({"prompt": query, "n": n, "size": "1024x1024"}); 
+  Future<List<Map<String,dynamic>>> image(String query,int n,int sz) async {
+    List<String> size=['256x256','512x512','1024x1024'];
+    final body = json.encode({"prompt": query, "n": n, "size": size[sz]}); 
     final pref = await SharedPreferences.getInstance();
     final response = await http.post(
         Uri.parse('https://api.openai.com/v1/images/generations'),

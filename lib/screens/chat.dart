@@ -31,7 +31,7 @@ class ChatScreen extends StatelessWidget {
           child: Row(
             children: [
               Flexible(
-                  flex: 2,
+                  flex: 3,
                   fit: FlexFit.tight,
                   child: BlocBuilder<ChatBloc, AppState>(
                     builder: (context, state) {
@@ -357,6 +357,45 @@ class ChatScreen extends StatelessWidget {
                                       BlocProvider.of<ChatBloc>(context)
                                           .add(SetNEvent(val));
                                     }),
+                              ),
+                              Text('Images size:',
+                                  style: TextStyle(fontSize: 15)),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: 0,
+                                      groupValue: state.sz,
+                                      onChanged: (val) {
+                                        BlocProvider.of<ChatBloc>(context)
+                                            .add(SetSzEvent(0));
+                                      }),
+                                  Text('256x256',style: TextStyle(fontSize: 12),), 
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  Radio(
+                                      value: 1,
+                                      groupValue: state.sz,
+                                      onChanged: (val) {
+                                        BlocProvider.of<ChatBloc>(context)
+                                            .add(SetSzEvent(1));
+                                      }),
+                                  Text('512x512',style: TextStyle(fontSize: 12)),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  Radio(
+                                      value: 2,
+                                      groupValue: state.sz,
+                                      onChanged: (val) {
+                                        BlocProvider.of<ChatBloc>(context)
+                                            .add(SetSzEvent(2));
+                                      }),
+                                  Text('1024x1024',style: TextStyle(fontSize: 12)), 
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height:
@@ -817,7 +856,7 @@ class ChatScreen extends StatelessWidget {
                     },
                   )),
               Flexible(
-                  flex: 9,
+                  flex: 11,
                   child: Container(
                     padding: EdgeInsets.symmetric(
                       vertical: 15,
@@ -826,7 +865,7 @@ class ChatScreen extends StatelessWidget {
                       children: [
                         Flexible(
                             flex: 5,
-                            fit: FlexFit.tight,
+                            fit: FlexFit.tight, 
                             child: BlocBuilder<ChatBloc, AppState>(
                               builder: (context, state) {
                                 if (state is ChatLoadingState) {
