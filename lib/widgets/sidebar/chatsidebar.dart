@@ -31,6 +31,21 @@ class ChatSidebar extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
+          Tooltip(
+            message:
+                'Improve the model\'s ability to comprehend conversation context and respond naturally',
+            child: Row(
+              children: [
+                Text('Natural conversation: '),
+                Checkbox(
+                    activeColor: Colors.grey,
+                    value: state.nc,
+                    onChanged: (val) {
+                      BlocProvider.of<ChatBloc>(context).add(SetNCEvent(val!));
+                    })
+              ],
+            ),
+          ),
           Text(
             'Temperature: ${state.temp}',
             style: TextStyle(fontSize: 15),

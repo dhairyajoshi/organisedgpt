@@ -24,6 +24,21 @@ class MobileChatSidebar extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
+        Tooltip(
+          message:
+              'Improve the model\'s ability to comprehend conversation context and respond naturally',
+          child: Row(
+            children: [
+              Text('Natural conversation: '),
+              Checkbox(
+                  activeColor: Colors.grey,
+                  value: state.nc,
+                  onChanged: (val) {
+                    BlocProvider.of<ChatBloc>(context).add(SetNCEvent(val!));
+                  })
+            ],
+          ),
+        ),
         Text(
           'Temperature: ${state.temp}',
           style: TextStyle(fontSize: 15),
@@ -76,14 +91,12 @@ class MobileChatSidebar extends StatelessWidget {
                 child: Container(
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(vertical: 15),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     decoration: BoxDecoration(
                         color: state.op == 0
                             ? Color.fromARGB(255, 95, 95, 95)
                             : Colors.transparent,
-                        border:
-                            Border(bottom: BorderSide(color: Colors.grey))),
+                        border: Border(bottom: BorderSide(color: Colors.grey))),
                     child: Center(
                       child: Text(
                         'ChatGPT',
@@ -103,10 +116,8 @@ class MobileChatSidebar extends StatelessWidget {
                         color: state.op == 1
                             ? Color.fromARGB(255, 95, 95, 95)
                             : Colors.transparent,
-                        border:
-                            Border(bottom: BorderSide(color: Colors.grey))),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        border: Border(bottom: BorderSide(color: Colors.grey))),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: Center(
                       child: Text(
                         'GPT-3',
@@ -126,10 +137,8 @@ class MobileChatSidebar extends StatelessWidget {
                         color: state.op == 2
                             ? Color.fromARGB(255, 95, 95, 95)
                             : Colors.transparent,
-                        border:
-                            Border(bottom: BorderSide(color: Colors.grey))),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        border: Border(bottom: BorderSide(color: Colors.grey))),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: Center(
                       child: Text(
                         'Image',
@@ -149,10 +158,8 @@ class MobileChatSidebar extends StatelessWidget {
                         color: state.op == 3
                             ? Color.fromARGB(255, 95, 95, 95)
                             : Colors.transparent,
-                        border:
-                            Border(bottom: BorderSide(color: Colors.grey))),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                        border: Border(bottom: BorderSide(color: Colors.grey))),
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                     child: Center(
                       child: Text(
                         'Audio',
@@ -168,8 +175,7 @@ class MobileChatSidebar extends StatelessWidget {
           child: Row(
             children: [
               Text('Change your API key',
-                  style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Icon(Icons.key)
             ],
           ),
@@ -210,8 +216,7 @@ class MobileChatSidebar extends StatelessWidget {
           child: Row(
             children: [
               Text('Remove your API key',
-                  style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Icon(Icons.delete_outline)
             ],
           ),
