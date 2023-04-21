@@ -101,8 +101,12 @@ class ChatScreen extends StatelessWidget {
                                         child: TextField(
                                           controller: _controller,
                                           keyboardType: TextInputType.multiline,
-                                          onChanged: ((value) =>
-                                              search = value),
+                                          onChanged: ((value) {
+                                            search = value;
+                                            BlocProvider.of<ChatBloc>(context)
+                                                .add(SetTokenEvent(
+                                                    value.length));
+                                          }),
                                           onSubmitted: (val) {
                                             _controller.text = "";
                                             BlocProvider.of<ChatBloc>(context)
@@ -113,14 +117,32 @@ class ChatScreen extends StatelessWidget {
                                       ),
                                       Flexible(
                                         flex: 1,
-                                        child: IconButton(
-                                          icon: Icon(Icons.send),
-                                          onPressed: () {
-                                            _controller.text = "";
-                                            BlocProvider.of<ChatBloc>(context)
-                                                .add(FetchResultEvent(search));
-                                            search = "";
-                                          },
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.send),
+                                              onPressed: () {
+                                                _controller.text = "";
+                                                BlocProvider.of<ChatBloc>(
+                                                        context)
+                                                    .add(FetchResultEvent(
+                                                        search));
+                                                search = "";
+                                              },
+                                            ),
+                                            Text(
+                                              state.tc.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  color: state.tc +
+                                                              state.maxlength >
+                                                          4000
+                                                      ? Colors.red
+                                                      : Colors.white),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ]),

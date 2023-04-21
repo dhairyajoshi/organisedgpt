@@ -1,4 +1,6 @@
 //ignore_for_file: prefer_const_literals_to_create_immutables
+import 'dart:html';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,10 +18,11 @@ class UnderProgressState extends AppState {
 
 class ChatLoadedState extends AppState {
   final List<Map<String, dynamic>> _chats;
-  int op;
+  int op, tc;
   double temp, maxlength;
   bool nc;
-  ChatLoadedState(this.temp, this.maxlength, this.nc, this._chats, this.op);
+  ChatLoadedState(
+      this.temp, this.maxlength, this.nc, this.tc, this._chats, this.op);
 
   @override
   List<Object?> get props => [_chats, temp, op];
@@ -88,6 +91,11 @@ class SetNCEvent extends AppEvent {
   SetNCEvent(this.nc);
 }
 
+class SetTokenEvent extends AppEvent {
+  int tc;
+  SetTokenEvent(this.tc);
+}
+
 class ChatBloc extends Bloc<AppEvent, AppState> {
   List<List<Map<String, dynamic>>> allChats = [
     [
@@ -104,7 +112,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     ]
   ];
 
-  int op = 0, sz = 0;
+  int op = 0, sz = 0, tc = 0;
   double temp = 0.7, maxlength = 300, n = 1;
   bool nc = true;
   ChatBloc()
@@ -112,6 +120,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             0.7,
             300,
             true,
+            0,
             [
               const {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
             ],
@@ -125,7 +134,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             .add({'u': 1, 'c': 'Getting your answer...', 'a': 0, 't': 0});
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
-            : emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+            : emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
 
         String res = "";
         List<Map<String, dynamic>> imres = [];
@@ -173,10 +182,10 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             ? allChats[op] = allChats[op] + imres
             : allChats[op].add({'u': 1, 'c': res, 'a': 1, 't': 0});
         emit(ChatLoadingState());
-
+        add(SetTokenEvent(0));
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
-            : emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+            : emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
       },
     );
 
@@ -189,7 +198,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         } else if (op == 3) {
           emit(UnderProgressState(op));
         } else {
-          emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+          emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
         }
       },
     );
@@ -199,7 +208,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         emit(ChatLoadingState());
         allChats[op].removeRange(event.idx, allChats[op].length);
 
-        emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
       },
     );
 
@@ -216,7 +225,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<SetTempEvent>(
       (event, emit) {
         temp = event.temp;
-        emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
       },
     );
 
@@ -224,7 +233,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         maxlength = event.len;
-        emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
       },
     );
 
@@ -248,7 +257,25 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         nc = event.nc;
-        emit(ChatLoadedState(temp, maxlength, nc, allChats[op], op));
+        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+      },
+    );
+
+    on<SetTokenEvent>(
+      (event, emit) {
+        emit(ChatLoadingState());
+        int c = 0;
+        if (nc) {
+          String fquery = "";
+          for (int i = 0; i < allChats[op].length - 1; i++) {
+            fquery += allChats[op][i]['c'] + '\n';
+          }
+          c = fquery.length + event.tc;
+        } else {
+          c = event.tc;
+        } 
+        tc=c;
+        emit(ChatLoadedState(temp, maxlength, nc, c, allChats[op], op));
       },
     );
   }
