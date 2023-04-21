@@ -347,7 +347,7 @@ class ChatScreen extends StatelessWidget {
                               ),
                               Tooltip(
                                 message:
-                                    'What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.',
+                                    'The number of images to generate. Must be between 1 and 10.',
                                 child: Slider(
                                     min: 1,
                                     max: 5,
