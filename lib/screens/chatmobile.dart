@@ -7,13 +7,12 @@ import 'package:flutter_markdown_selectionarea/flutter_markdown.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
-import 'package:organisedgpt/screens/login.dart';
-import 'package:organisedgpt/services/database.dart';
+import 'package:organisedgpt/widgets/maincontent/chatcontent.dart';
 import 'package:organisedgpt/widgets/sidebar/mobilechatsidebar.dart';
 import 'package:organisedgpt/widgets/sidebar/mobileimagesidebar.dart';
 import 'package:organisedgpt/widgets/sidebar/mobileupsidebar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../widgets/maincontent/imagecontent.dart';
 
 class MobileChatScreen extends StatelessWidget {
   String response = "", search = "";
@@ -69,34 +68,10 @@ class MobileChatScreen extends StatelessWidget {
                           );
                         }
                         if (state is ImageGenerationState) {
-                          return ListView.builder(
-                              itemCount: state.chats.length,
-                              reverse: true,
-                              itemBuilder: (context, idx) {
-                                final ridx = state.chats.length - 1 - idx;
-                                return Dialogue(
-                                    ridx,
-                                    state.chats[ridx]['u'],
-                                    state.chats[ridx]['c'],
-                                    state.chats[ridx]['t'],
-                                    state.chats[ridx]['a'],
-                                    context);
-                              });
+                          return ImageContent(context, state);
                         }
                         if (state is ChatLoadedState) {
-                          return ListView.builder(
-                              itemCount: state.chats.length,
-                              reverse: true,
-                              itemBuilder: (context, idx) {
-                                final ridx = state.chats.length - 1 - idx;
-                                return Dialogue(
-                                    ridx,
-                                    state.chats[ridx]['u'],
-                                    state.chats[ridx]['c'],
-                                    state.chats[ridx]['t'],
-                                    state.chats[ridx]['a'],
-                                    context);
-                              });
+                          return ChatContent(context, state);
                         }
                         return Center(
                           child: CircularProgressIndicator(),
@@ -184,145 +159,6 @@ class MobileChatScreen extends StatelessWidget {
             ),
             // color: Colors.blue,
           )),
-    );
-  }
-}
-
-class Dialogue extends StatelessWidget {
-  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key});
-  String text;
-  int i, u, t, a;
-  BuildContext ctx;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: u == 0
-              ? Color.fromRGBO(52, 53, 65, 1)
-              : Color.fromRGBO(68, 70, 84, 1),
-          border: Border(
-            bottom:
-                BorderSide(width: 1, color: Color.fromARGB(255, 147, 147, 147)),
-          )),
-      // margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              u == 0
-                  ? Text(
-                      'User:',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                    )
-                  : Text('GPT:',
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
-              Row(
-                children: [
-                  if (u == 0)
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Are you sure?"),
-                                content: Text(
-                                    'This will delete all the following chats too'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Cancel')),
-                                  TextButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ChatBloc>(ctx)
-                                            .add(DeleteChatEvent(i));
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Confirm')),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.delete_outlined,
-                          size: 17,
-                        )),
-                  if (u == 1 && a == 1)
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Are you sure?"),
-                                content: Text(
-                                    'This will delete all the following chats too'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Cancel')),
-                                  TextButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ChatBloc>(ctx)
-                                            .add(RegenChatEvent(i));
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Confirm')),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.refresh,
-                          size: 17,
-                        )),
-                ],
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          if (t == 1)
-            Column(
-              children: [
-                Text("Here's your URL: ", style: TextStyle(fontSize: 18)),
-                SizedBox(
-                  height: 5,
-                ),
-                InkWell(
-                  child: Text(text),
-                  onTap: () async {
-                    launch(text);
-                    await WebImageDownloader.downloadImageFromWeb(text);
-                    print('downloaded');
-                  },
-                )
-              ],
-            )
-          else
-            Container(
-                alignment: Alignment.topLeft,
-                width: double.infinity,
-                child: SelectionArea(
-                    child: MarkdownBody(
-                  data: text.trim(),
-                  styleSheet: MarkdownStyleSheet(
-                      textScaleFactor: 1.3, textAlign: WrapAlignment.start),
-                ))),
-        ],
-      ),
     );
   }
 }

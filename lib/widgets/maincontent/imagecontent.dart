@@ -1,13 +1,14 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 
 import '../reused/dialogue.dart';
 
-class ChatContent extends StatelessWidget {
-  ChatContent(this.context, this.state, {super.key});
+class ImageContent extends StatelessWidget {
+  ImageContent(this.context, this.state, {super.key});
   BuildContext context;
-  ChatLoadedState state;
-
+  ImageGenerationState state;
   @override
   Widget build(BuildContext tctx) {
     return ListView.builder(
