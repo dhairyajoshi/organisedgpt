@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
+import 'package:organisedgpt/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../screens/anonlogin.dart';
@@ -231,10 +232,13 @@ class ChatSidebar extends StatelessWidget {
           InkWell(
             child: Row(
               children: [
-                Text('Remove your API key',
+                Text('Logout',
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Icon(Icons.delete_outline)
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(Icons.logout)
               ],
             ),
             onTap: () {
@@ -255,10 +259,12 @@ class ChatSidebar extends StatelessWidget {
                           onPressed: () async {
                             final pref = await SharedPreferences.getInstance();
                             pref.remove('api');
+                            pref.remove('token');
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) => AnonymousLoginScreen())));
+                                    builder: ((context) =>
+                                        LoginScreen())));
                           },
                           child: Text('Confirm')),
                     ],
