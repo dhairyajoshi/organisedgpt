@@ -5,7 +5,7 @@ import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../screens/login.dart';
+import '../../screens/anonlogin.dart';
 
 class MobileChatSidebar extends StatelessWidget {
   BuildContext ctx;
@@ -35,6 +35,21 @@ class MobileChatSidebar extends StatelessWidget {
                   value: state.nc,
                   onChanged: (val) {
                     BlocProvider.of<ChatBloc>(context).add(SetNCEvent(val!));
+                  })
+            ],
+          ),
+        ),
+        Tooltip(
+          message:
+              'Ensure chat synchronization across all devices for universal accessibility',
+          child: Row(
+            children: [
+              Text('Sync conversations: '),
+              Checkbox(
+                  activeColor: Colors.grey,
+                  value: state.sc,
+                  onChanged: (val) {
+                    BlocProvider.of<ChatBloc>(context).add(SetSCEvent(val!));
                   })
             ],
           ),
@@ -241,7 +256,7 @@ class MobileChatSidebar extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => LoginScreen())));
+                                  builder: ((context) => AnonymousLoginScreen())));
                         },
                         child: Text('Confirm')),
                   ],

@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
+import 'package:organisedgpt/models/userModel.dart';
 import 'package:organisedgpt/screens/chat.dart';
 import 'package:organisedgpt/screens/chatmobile.dart';
+import 'package:organisedgpt/services/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckAuthState extends AppState {}
@@ -18,6 +22,18 @@ class AddApiEvent extends AppEvent {
   BuildContext context;
   String api;
   AddApiEvent(this.context, this.api);
+}
+
+class SignUpEvent extends AppEvent {
+  UserModel user;
+  BuildContext context;
+  SignUpEvent(this.context, this.user);
+}
+
+class LoginEvent extends AppEvent {
+  String uname, pass;
+  BuildContext context;
+  LoginEvent(this.context, this.uname, this.pass);
 }
 
 class AuthBloc extends Bloc<AppEvent, AppState> {
@@ -51,6 +67,40 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
           Navigator.of(event.context).pushReplacement(
               MaterialPageRoute(builder: ((context) => MobileChatScreen())));
         }
+      },
+    );
+
+    on<SignUpEvent>(
+      (event, emit) async {
+        emit(CheckAuthState());
+        final res = await DatabaseService().signUp(event.user);
+        if (res) {
+          if (MediaQuery.of(event.context).size.width >= 1280) {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => ChatScreen())));
+          } else {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
+          }
+        }
+        emit(InputApiState());
+      },
+    );
+
+    on<LoginEvent>(
+      (event, emit) async {
+        emit(CheckAuthState());
+        final res = await DatabaseService().login(event.uname, event.pass);
+        if (res) {
+          if (MediaQuery.of(event.context).size.width >= 1280) {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => ChatScreen())));
+          } else {
+            Navigator.of(event.context).pushReplacement(
+                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
+          }
+        }
+        emit(InputApiState());
       },
     );
   }

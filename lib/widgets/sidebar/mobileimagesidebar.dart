@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../screens/login.dart';
+import '../../screens/anonlogin.dart';
 
 class MobileImageSideBar extends StatelessWidget {
   BuildContext ctx;
@@ -253,7 +253,7 @@ class MobileImageSideBar extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => LoginScreen())));
+                                  builder: ((context) => AnonymousLoginScreen())));
                         },
                         child: Text('Confirm')),
                   ],

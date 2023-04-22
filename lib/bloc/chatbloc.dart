@@ -2,9 +2,11 @@
 import 'dart:html';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:organisedgpt/bloc/appbloc.dart';
+import 'package:organisedgpt/models/conversation.dart';
 import 'package:organisedgpt/services/database.dart';
 
 class ChatLoadingState extends AppState {}
@@ -17,29 +19,31 @@ class UnderProgressState extends AppState {
 }
 
 class ChatLoadedState extends AppState {
-  final List<Map<String, dynamic>> _chats;
+  final List<Message> _Messages;
   int op, tc;
   double temp, maxlength;
-  bool nc;
-  ChatLoadedState(
-      this.temp, this.maxlength, this.nc, this.tc, this._chats, this.op);
+  bool sc, nc;
+  List<ChatModel> chats;
+  List<DropdownMenuItem<String>> dropitems;
+  ChatLoadedState(this.dropitems, this.chats, this.temp, this.maxlength,
+      this.sc, this.nc, this.tc, this._Messages, this.op);
 
   @override
-  List<Object?> get props => [_chats, temp, op];
+  List<Object?> get props => [_Messages, temp, op, maxlength, sc, nc, chats];
 
-  get chats => _chats;
+  get Messages => _Messages;
 }
 
 class ImageGenerationState extends AppState {
   int _n, op, sz;
-  final List<Map<String, dynamic>> _chats;
-  ImageGenerationState(this._n, this._chats, this.op, this.sz);
+  final List<Message> _Messages;
+  ImageGenerationState(this._n, this._Messages, this.op, this.sz);
 
   @override
-  List<Object?> get props => [_chats, _n];
+  List<Object?> get props => [_Messages, _n, op, sz];
 
   get n => _n;
-  get chats => _chats;
+  get Messages => _Messages;
 }
 
 class FetchResultEvent extends AppEvent {
@@ -91,58 +95,62 @@ class SetNCEvent extends AppEvent {
   SetNCEvent(this.nc);
 }
 
+class SetSCEvent extends AppEvent {
+  bool sc;
+  SetSCEvent(this.sc);
+}
+
 class SetTokenEvent extends AppEvent {
   int tc;
   SetTokenEvent(this.tc);
 }
 
 class ChatBloc extends Bloc<AppEvent, AppState> {
-  List<List<Map<String, dynamic>>> allChats = [
+  List<List<Message>> allMessages = [
     [
-      {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
+      // {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
+      Message(1, 'Ask any question...', 0, 0)
     ],
     [
-      {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
+      // {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
+      Message(1, 'Start with any phrase...', 0, 0)
     ],
     [
-      {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
+      // {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
+      Message(1, 'Give any description...', 0, 0)
     ],
     [
-      {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
+      // {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
+      Message(1, 'Upload an audio...', 0, 0)
     ]
   ];
 
   int op = 0, sz = 0, tc = 0;
   double temp = 0.7, maxlength = 300, n = 1;
-  bool nc = true;
+  bool nc = true, sc = true;
+  List<ChatModel> chats = [];
+  List<DropdownMenuItem<String>> dropitems = [];
   ChatBloc()
-      : super(ChatLoadedState(
-            0.7,
-            300,
-            true,
-            0,
-            [
-              const {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
-            ],
-            0)) {
+      : super(ChatLoadedState([], [], 0.7, 300, true, true, 0,
+            [Message(1, 'Ask any question...', 0, 0)], 0)) {
     on<FetchResultEvent>(
       (event, emit) async {
         if (event.query.trim() == "") return;
         emit(ChatLoadingState());
-        allChats[op].add({'u': 0, 'c': event.query.trim(), 'a': 0, 't': 0});
-        allChats[op]
-            .add({'u': 1, 'c': 'Getting your answer...', 'a': 0, 't': 0});
+        allMessages[op].add(Message(0, event.query.trim(), 0, 0));
+        allMessages[op].add(Message(1, 'Getting your answer...', 0, 0));
         op == 2
-            ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
-            : emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+            ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
+            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc,
+                tc, allMessages[op], op));
 
         String res = "";
-        List<Map<String, dynamic>> imres = [];
+        List<Message> imres = [];
         switch (op) {
           case 0:
             String fquery = "";
-            for (int i = 0; i < allChats[op].length - 1; i++) {
-              fquery += allChats[op][i]['c'] + '\n';
+            for (int i = 0; i < allMessages[op].length - 1; i++) {
+              fquery += '${allMessages[op][i].c}\n';
             }
             if (nc) {
               res =
@@ -155,8 +163,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
           case 1:
             String fquery = "";
-            for (int i = 0; i < allChats[op].length - 1; i++) {
-              fquery += allChats[op][i]['c'] + '\n';
+            for (int i = 0; i < allMessages[op].length - 1; i++) {
+              fquery += '${allMessages[op][i].c}\n';
             }
             if (nc) {
               res = await DatabaseService()
@@ -177,28 +185,30 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                 .chat(event.query, temp, maxlength.toInt());
             break;
         }
-        allChats[op].removeLast();
+        allMessages[op].removeLast();
         op == 2
-            ? allChats[op] = allChats[op] + imres
-            : allChats[op].add({'u': 1, 'c': res, 'a': 1, 't': 0});
+            ? allMessages[op] = allMessages[op] + imres
+            : allMessages[op].add(Message(1, res, 1, 0));
         emit(ChatLoadingState());
         add(SetTokenEvent(0));
         op == 2
-            ? emit(ImageGenerationState(n.toInt(), allChats[op], op, sz))
-            : emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+            ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
+            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc,
+                tc, allMessages[op], op));
       },
     );
 
     on<SelectOptionEvent>(
       (event, emit) {
-        emit(ChatLoadingState());
+        // emit(ChatLoadingState());
         op = event.op;
         if (op == 2) {
-          emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
+          emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
         } else if (op == 3) {
           emit(UnderProgressState(op));
         } else {
-          emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+          emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+              allMessages[op], op));
         }
       },
     );
@@ -206,18 +216,19 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<DeleteChatEvent>(
       (event, emit) {
         emit(ChatLoadingState());
-        allChats[op].removeRange(event.idx, allChats[op].length);
+        allMessages[op].removeRange(event.idx, allMessages[op].length);
 
-        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+            allMessages[op], op));
       },
     );
 
     on<RegenChatEvent>(
       (event, emit) {
         emit(ChatLoadingState());
-        allChats[op].removeRange(event.idx, allChats[op].length);
-        String query = allChats[op].last['c'];
-        allChats[op].removeLast();
+        allMessages[op].removeRange(event.idx, allMessages[op].length);
+        String query = allMessages[op].last.c;
+        allMessages[op].removeLast();
         add(FetchResultEvent(query));
       },
     );
@@ -225,23 +236,25 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<SetTempEvent>(
       (event, emit) {
         temp = event.temp;
-        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+            allMessages[op], op));
       },
     );
 
     on<SetLenEvent>(
       (event, emit) {
-        emit(ChatLoadingState());
+        // emit(ChatLoadingState());
         maxlength = event.len;
-        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+            allMessages[op], op));
       },
     );
 
     on<SetNEvent>(
       (event, emit) {
-        emit(ChatLoadingState());
+        // emit(ChatLoadingState());
         n = event.n;
-        emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
+        emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
       },
     );
 
@@ -249,15 +262,31 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         emit(ChatLoadingState());
         sz = event.sz;
-        emit(ImageGenerationState(n.toInt(), allChats[op], op, sz));
+        emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
       },
     );
 
     on<SetNCEvent>(
       (event, emit) {
-        emit(ChatLoadingState());
+        // emit(ChatLoadingState());
         nc = event.nc;
-        emit(ChatLoadedState(temp, maxlength, nc, tc, allChats[op], op));
+        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+            allMessages[op], op));
+      },
+    );
+
+    on<SetSCEvent>(
+      (event, emit) async {
+        // emit(ChatLoadingState());
+        sc = event.sc;
+        if (sc) {
+          final chats = await DatabaseService().getChats();
+          for (int i = 0; i < chats.length; i++) {
+            dropitems.add(DropdownMenuItem(child: Text(chats[i].name)));
+          }
+        }
+        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
+            allMessages[op], op));
       },
     );
 
@@ -267,15 +296,18 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         int c = 0;
         if (nc) {
           String fquery = "";
-          for (int i = 0; i < allChats[op].length - 1; i++) {
-            fquery += allChats[op][i]['c'] + '\n';
+          for (int i = 0; i < allMessages[op].length - 1; i++) {
+            fquery += '${allMessages[op][i].c}\n';
           }
           c = fquery.length + event.tc;
         } else {
           c = event.tc;
-        } 
-        tc=c;
-        emit(ChatLoadedState(temp, maxlength, nc, c, allChats[op], op));
+        }
+        tc = c;
+        op == 2
+            ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
+            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, c,
+                allMessages[op], op));
       },
     );
   }

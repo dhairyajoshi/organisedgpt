@@ -12,13 +12,14 @@ class ImageContent extends StatelessWidget {
   @override
   Widget build(BuildContext tctx) {
     return ListView.builder(
-        itemCount: state.chats.length,
+        itemCount: state.Messages.length,
         reverse: true,
         itemBuilder: (context, idx) {
-          final ridx = state.chats.length - 1 - idx;
-          return Dialogue(ridx, state.chats[ridx]['u'], state.chats[ridx]['c'],
-              state.chats[ridx]['t'], state.chats[ridx]['a'], context);
+          final ridx = state.Messages.length - 1 - idx;
+          return Dialogue(ridx, state.Messages[ridx].u, state.Messages[ridx].c,
+              state.Messages[ridx].t, state.Messages[ridx].a, context);
         });
     ;
   }
 }
+ 

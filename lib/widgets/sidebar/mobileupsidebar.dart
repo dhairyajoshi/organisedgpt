@@ -5,7 +5,7 @@ import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../screens/login.dart';
+import '../../screens/anonlogin.dart';
 
 class MobileUPChatSidebar extends StatelessWidget {
   BuildContext ctx;
@@ -226,7 +226,7 @@ class MobileUPChatSidebar extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => LoginScreen())));
+                                  builder: ((context) => AnonymousLoginScreen())));
                         },
                         child: Text('Confirm')),
                   ],
