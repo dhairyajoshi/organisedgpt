@@ -81798,7 +81798,7 @@ ahE(a,b){var s=0,r=A.R(t.y),q,p,o,n,m
 var $async$tM=A.S(function(c,d){if(c===1)return A.O(d,r)
 while(true)switch(s){case 0:p=t.N
 s=3
-return A.T(A.Yv(A.h9("http://localhost:3000/user/login",0,null),A.aA(["username",a,"password",b],p,p),null),$async$tM)
+return A.T(A.Yv(A.h9("https://organisedgpt-backend.onrender.com/user/login",0,null),A.aA(["username",a,"password",b],p,p),null),$async$tM)
 case 3:o=d
 n=B.ap.cq(0,A.qW(A.qM(o.e).c.a.h(0,"charset")).cq(0,o.w))
 s=4
@@ -81818,7 +81818,7 @@ qh(a){return this.V8(a)},
 V8(a){var s=0,r=A.R(t.y),q,p,o,n
 var $async$qh=A.S(function(b,c){if(b===1)return A.O(c,r)
 while(true)switch(s){case 0:s=3
-return A.T(A.Yv(A.h9("http://localhost:3000/user/signup",0,null),a.iv(),null),$async$qh)
+return A.T(A.Yv(A.h9("https://organisedgpt-backend.onrender.com/user/signup",0,null),a.iv(),null),$async$qh)
 case 3:p=c
 o=B.ap.cq(0,A.qW(A.qM(p.e).c.a.h(0,"charset")).cq(0,p.w))
 s=4
@@ -81841,7 +81841,7 @@ return A.T(A.dD(),$async$q2)
 case 3:n=b
 m=t.N
 s=4
-return A.T(A.aCP(A.h9("http://localhost:3000/conv/getchats",0,null),A.aA(["Authorization","Bearer "+A.h(A.cq(J.aI(n.a,"token")))],m,m)),$async$q2)
+return A.T(A.aCP(A.h9("https://organisedgpt-backend.onrender.com/conv/getchats",0,null),A.aA(["Authorization","Bearer "+A.h(A.cq(J.aI(n.a,"token")))],m,m)),$async$q2)
 case 4:l=b
 k=B.ap.cq(0,A.qW(A.qM(l.e).c.a.h(0,"charset")).cq(0,l.w))
 if(l.b===200)for(m=J.aj(k),p=0;p<J.b_(m.h(k,"chats"));++p){J.aI(J.aI(m.h(k,"chats"),p),"id")

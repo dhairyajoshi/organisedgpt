@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/conversation.dart';
 
 class DatabaseService {
-  String baseUrl = 'http://localhost:3000';
+  String baseUrl = 'https://organisedgpt-backend.onrender.com';
 
   Future<bool> login(String uname, String pass) async {
     final response = await http.post(Uri.parse('${baseUrl}/user/login'),
