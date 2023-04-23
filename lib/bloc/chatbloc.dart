@@ -57,6 +57,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
   List<ChatModel> chats = [];
   List<DropdownMenuItem<int>> dropitems = [];
   int? selectedDropdown;
+  bool prefset = false;
   ChatBloc()
       : super(ChatLoadedState([], null, [], 0.7, 300, false, true, 0,
             [Message(1, 'Ask any question...', 0, 0)], 0)) {
@@ -118,8 +119,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
           case 2:
             imres = await DatabaseService().image(event.query, n.toInt(), sz);
             allMessages[op].removeLast();
-              
-              allMessages[op] = allMessages[op] + imres;
+
+            allMessages[op] = allMessages[op] + imres;
             break;
 
           default:
@@ -145,11 +146,21 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         // emit(ChatLoadingState());
         op = event.op;
         if (op == 0) {
+          if (!prefset) {
+            temp = 0.7;
+            maxlength = 300;
+            nc = true;
+          }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
               maxlength, sc, nc, tc, allMessages[op], op));
         } else if (op == 1) {
           selectedDropdown = null;
           sc = false;
+          nc = false;
+          if (!prefset) {
+            temp = 1;
+            maxlength = 3100;
+          }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
               maxlength, sc, nc, tc, allMessages[op], op));
         } else if (op == 2) {
@@ -182,6 +193,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetTempEvent>(
       (event, emit) {
+        prefset = true;
         temp = event.temp;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
@@ -191,6 +203,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<SetLenEvent>(
       (event, emit) {
         // emit(ChatLoadingState());
+        prefset = true;
         maxlength = event.len;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
@@ -215,6 +228,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetNCEvent>(
       (event, emit) {
+        prefset = true;
         // emit(ChatLoadingState());
         nc = event.nc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
