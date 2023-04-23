@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/models/conversation.dart';
 import 'package:organisedgpt/services/database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatLoadingState extends AppState {}
 
@@ -333,6 +334,26 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         // emit(ChatLoadingState());
         sc = event.sc;
         if (sc) {
+          final pref = await SharedPreferences.getInstance();
+          if (pref.getString('token') == null) {
+            sc = false;
+            await showDialog(
+              context: event.context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Must Login to sync conversations"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('ok'))
+                  ],
+                );
+              },
+            );
+            return;
+          }
           if (op != 0) {
             sc = false;
             await showDialog(
