@@ -428,7 +428,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               );
             },
           );
-          allMessages[op] = defallMessages[op];
+          
         } else if (event.selected != null) {
           selectedDropdown = event.selected;
           allMessages[op] =
