@@ -25,6 +25,7 @@ class ChatContent extends StatelessWidget {
                 // color: Colors.blue,
                 child: DropdownButton<int>(
                   hint: Text('select chat'),
+                  disabledHint: Text('loading'),
                   value: state.selectedDropdown,
                   items: state.dropitems,
                   onChanged: (value) {
