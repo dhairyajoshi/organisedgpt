@@ -1,4 +1,4 @@
-//ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last
+//ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_const_constructors
 import 'dart:html';
 
 import 'package:equatable/equatable.dart';
@@ -108,7 +108,8 @@ class SetNCEvent extends AppEvent {
 
 class SetSCEvent extends AppEvent {
   bool sc;
-  SetSCEvent(this.sc);
+  BuildContext context;
+  SetSCEvent(this.context, this.sc);
 }
 
 class SetTokenEvent extends AppEvent {
@@ -249,13 +250,18 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         // emit(ChatLoadingState());
         op = event.op;
-        if (op == 2) {
+        if (op == 0) {
+          emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+              maxlength, sc, nc, tc, allMessages[op], op));
+        } else if (op == 1) {
+          selectedDropdown = null;
+          sc = false;
+          emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+              maxlength, sc, nc, tc, allMessages[op], op));
+        } else if (op == 2) {
           emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
         } else if (op == 3) {
           emit(UnderProgressState(op));
-        } else {
-          emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-              maxlength, sc, nc, tc, allMessages[op], op));
         }
       },
     );
@@ -327,6 +333,26 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         // emit(ChatLoadingState());
         sc = event.sc;
         if (sc) {
+          if (op != 0) {
+            sc = false;
+            await showDialog(
+              context: event.context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text(
+                      "Converation Sync not available for this mode"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('ok'))
+                  ],
+                );
+              },
+            );
+            return;
+          }
           dropitems = [];
           chats = await DatabaseService().getChats();
           for (int i = 0; i < chats.length; i++) {
@@ -370,7 +396,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetDropdownEvent>(
       (event, emit) async {
-        // emit(ChatLoadingState()); 
+        // emit(ChatLoadingState());
 
         final _key = GlobalKey<FormState>();
         AutovalidateMode _autovalidate = AutovalidateMode.disabled;
@@ -428,7 +454,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               );
             },
           );
-          
         } else if (event.selected != null) {
           selectedDropdown = event.selected;
           allMessages[op] =

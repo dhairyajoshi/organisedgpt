@@ -26,7 +26,7 @@ class ChatSidebar extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.start,
         padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
         children: [
-          Text( 
+          Text(
             'Preferences',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -58,7 +58,8 @@ class ChatSidebar extends StatelessWidget {
                     activeColor: Colors.grey,
                     value: state.sc,
                     onChanged: (val) {
-                      BlocProvider.of<ChatBloc>(context).add(SetSCEvent(val!));
+                      BlocProvider.of<ChatBloc>(context)
+                          .add(SetSCEvent(context, val!));
                     })
               ],
             ),

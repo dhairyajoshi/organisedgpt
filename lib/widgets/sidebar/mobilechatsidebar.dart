@@ -50,7 +50,8 @@ class MobileChatSidebar extends StatelessWidget {
                   activeColor: Colors.grey,
                   value: state.sc,
                   onChanged: (val) {
-                    BlocProvider.of<ChatBloc>(context).add(SetSCEvent(val!));
+                    BlocProvider.of<ChatBloc>(context)
+                        .add(SetSCEvent(context, val!));
                   })
             ],
           ),
