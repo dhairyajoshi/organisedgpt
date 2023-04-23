@@ -222,6 +222,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         // emit(ChatLoadingState());
         sc = event.sc;
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
         if (sc) {
           final pref = await SharedPreferences.getInstance();
           if (pref.getString('token') == null) {
@@ -241,10 +243,13 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                 );
               },
             );
+            emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+                maxlength, sc, nc, tc, allMessages[op], op));
             return;
           }
           if (op != 0) {
             sc = false;
+
             await showDialog(
               context: event.context,
               builder: (BuildContext context) {
@@ -261,6 +266,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                 );
               },
             );
+            emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+                maxlength, sc, nc, tc, allMessages[op], op));
             return;
           }
           dropitems = [];
@@ -368,6 +375,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
           selectedDropdown = event.selected;
           allMessages[op] =
               await DatabaseService().getMessages(chats[selectedDropdown!].id);
+          if (allMessages[op].isEmpty) {
+            allMessages[op] = defallMessages[op];
+          }
         } else {
           allMessages[op] = defallMessages[op];
         }
