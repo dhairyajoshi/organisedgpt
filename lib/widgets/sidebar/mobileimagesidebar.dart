@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bloc/events/chatevents.dart';
+import '../../bloc/states/chatstates.dart';
 import '../../screens/anonlogin.dart';
 
 class MobileImageSideBar extends StatelessWidget {

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 
+import '../../bloc/events/chatevents.dart';
+import '../../bloc/states/chatstates.dart';
 import '../reused/dialogue.dart';
 
 class ChatContent extends StatelessWidget {

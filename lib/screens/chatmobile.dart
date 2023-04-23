@@ -12,6 +12,8 @@ import 'package:organisedgpt/widgets/sidebar/mobilechatsidebar.dart';
 import 'package:organisedgpt/widgets/sidebar/mobileimagesidebar.dart';
 import 'package:organisedgpt/widgets/sidebar/mobileupsidebar.dart';
 
+import '../bloc/events/chatevents.dart';
+import '../bloc/states/chatstates.dart';
 import '../widgets/maincontent/imagecontent.dart';
 
 class MobileChatScreen extends StatelessWidget {

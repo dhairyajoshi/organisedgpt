@@ -6,6 +6,8 @@ import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:organisedgpt/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bloc/events/chatevents.dart';
+import '../../bloc/states/chatstates.dart';
 import '../../screens/anonlogin.dart';
 
 class MobileChatSidebar extends StatelessWidget {
@@ -20,7 +22,7 @@ class MobileChatSidebar extends StatelessWidget {
       children: [
         Text(
           'Preferences',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
         ),
         SizedBox(
           height: 15,

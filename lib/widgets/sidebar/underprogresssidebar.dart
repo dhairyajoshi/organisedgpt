@@ -5,6 +5,8 @@ import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bloc/events/chatevents.dart';
+import '../../bloc/states/chatstates.dart';
 import '../../screens/anonlogin.dart';
 
 class UPChatSidebar extends StatelessWidget {
@@ -28,44 +30,6 @@ class UPChatSidebar extends StatelessWidget {
             'Preferences',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          // SizedBox(
-          //   height: 15,
-          // ),
-          // Text(
-          //   'Temperature: ${state.temp}',
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // Tooltip(
-          //   message:
-          //       'What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.',
-          //   child: Slider(
-          //       min: 0,
-          //       max: 1,
-          //       divisions: 100,
-          //       value: state.temp,
-          //       onChanged: (val) {
-          //         BlocProvider.of<ChatBloc>(ctx).add(SetTempEvent(val));
-          //       }),
-          // ),
-          // SizedBox(
-          //   height: 5,
-          // ),
-          // Text(
-          //   'Max length: ${state.maxlength.toInt()}',
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // Tooltip(
-          //   message:
-          //       'The maximum number of tokens to generate in the completion.The token count of your prompt plus max_tokens cannot exceed the model\'s context length',
-          //   child: Slider(
-          //       min: 1,
-          //       max: 4000,
-          //       divisions: 800,
-          //       value: state.maxlength,
-          //       onChanged: (val) {
-          //         BlocProvider.of<ChatBloc>(ctx).add(SetLenEvent(val));
-          //       }),
-          // ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
             width: double.infinity,

@@ -6,11 +6,12 @@ import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/chatbloc.dart';
+import '../../bloc/events/chatevents.dart';
 
 class Dialogue extends StatelessWidget {
-  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key});
+  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key}); 
   String text;
-  int i, u, t, a;
+  int i, u, t, a; 
   BuildContext ctx;
   @override
   Widget build(BuildContext context) {

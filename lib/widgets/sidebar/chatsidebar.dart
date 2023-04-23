@@ -6,6 +6,8 @@ import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:organisedgpt/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../bloc/events/chatevents.dart';
+import '../../bloc/states/chatstates.dart';
 import '../../screens/anonlogin.dart';
 
 class ChatSidebar extends StatelessWidget {

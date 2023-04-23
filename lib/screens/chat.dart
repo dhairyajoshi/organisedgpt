@@ -7,6 +7,8 @@ import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:organisedgpt/widgets/maincontent/chatcontent.dart';
 import 'package:organisedgpt/widgets/maincontent/imagecontent.dart';
 
+import '../bloc/events/chatevents.dart';
+import '../bloc/states/chatstates.dart';
 import '../widgets/sidebar/chatsidebar.dart';
 import '../widgets/sidebar/imagesidebar.dart';
 import '../widgets/sidebar/underprogresssidebar.dart';

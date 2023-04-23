@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 
+import '../../bloc/states/chatstates.dart';
 import '../reused/dialogue.dart';
 
 class ImageContent extends StatelessWidget {
@@ -22,4 +23,3 @@ class ImageContent extends StatelessWidget {
     ;
   }
 }
- 
