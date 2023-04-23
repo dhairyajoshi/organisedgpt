@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/conversation.dart';
 
 class DatabaseService {
-  String baseUrl = 'https://organisedgpt-backend.onrender.com';
+  // String baseUrl = 'https://organisedgpt-backend.onrender.com';
+  String baseUrl = 'http://localhost:3000';
 
   Future<bool> login(String uname, String pass) async {
     final response = await http.post(Uri.parse('${baseUrl}/user/login'),
@@ -50,48 +51,61 @@ class DatabaseService {
     final data = json.decode(response.body);
     if (response.statusCode == 200) {
       for (int i = 0; i < data['chats'].length; i++) {
-        chats.add(ChatModel(data['chats'][i]['id'], data['chats'][i]['name']));
+        chats.add(ChatModel(data['chats'][i]['_id'], data['chats'][i]['name']));
       }
     }
 
     return chats;
   }
 
-  Future<List<ChatModel>> getMessages(String id) async {
-    List<ChatModel> chats = [];
+  Future<List<Message>> getMessages(String id) async {
+    List<Message> chats = [];
     final pref = await SharedPreferences.getInstance();
     final response = await http.get(
         Uri.parse('${baseUrl}/conv/getmessages?id=${id}'),
         headers: {'Authorization': 'Bearer ${pref.getString('token')}'});
     final data = json.decode(response.body);
     if (response.statusCode == 200) {
-      for (int i = 0; i < data['chats'].length; i++) {
-        chats.add(ChatModel(data['chats'][i]['id'], data['chats'][i]['name']));
+      for (int i = 0; i < data['messages'].length; i++) {
+        chats.add(Message(data['messages'][i]['u'], data['messages'][i]['c'],
+            data['messages'][i]['a'], data['messages'][i]['t']));
       }
     }
 
     return chats;
   }
 
-  Future<bool> createChat(String name) async {
+  Future<ChatModel?> createChat(String name) async {
     final pref = await SharedPreferences.getInstance();
     final response = await http.post(Uri.parse('${baseUrl}/conv/createchat'),
         headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
         body: {"name": name});
+    print(response.body);
     if (response.statusCode == 200) {
-      return true;
+      final data = json.decode(response.body);
+      return ChatModel.fromJson(data['chat']);
     }
 
-    return false;
+    return null;
   }
 
-  Future<bool> addMessage(List<ChatModel> chats, String id) async {
+  Future<bool> addMessage(List<Message> chats, String id) async {
     final pref = await SharedPreferences.getInstance();
-    final response = await http.post(
-        Uri.parse('${baseUrl}/conv/addmessages?id=$id'),
-        headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
-        body: {chats});
-    final data = json.decode(response.body);
+    List<Map<String, dynamic>> jdata = [];
+    for (int i = 0; i < chats.length; i++) {
+      jdata.add(
+          {'u': chats[i].u, 'a': chats[i].a, 't': chats[i].t, 'c': chats[i].c});
+    }
+    final body = json.encode(jdata);
+    print(jdata);
+    final response =
+        await http.post(Uri.parse('${baseUrl}/conv/addmessages?id=$id'),
+            headers: <String, String>{
+              'Authorization': 'Bearer ${pref.getString('token')}',
+              'content-type': 'application/json'
+            },
+            body: body);
+    print(response.body);
     if (response.statusCode == 200) {
       return true;
     }

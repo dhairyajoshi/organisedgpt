@@ -1,4 +1,4 @@
-//ignore_for_file: prefer_const_literals_to_create_immutables
+//ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last
 import 'dart:html';
 
 import 'package:equatable/equatable.dart';
@@ -24,12 +24,23 @@ class ChatLoadedState extends AppState {
   double temp, maxlength;
   bool sc, nc;
   List<ChatModel> chats;
-  List<DropdownMenuItem<String>> dropitems;
-  ChatLoadedState(this.dropitems, this.chats, this.temp, this.maxlength,
-      this.sc, this.nc, this.tc, this._Messages, this.op);
+  List<DropdownMenuItem<int>> dropitems;
+  int? selectedDropdown;
+  ChatLoadedState(this.dropitems, this.selectedDropdown, this.chats, this.temp,
+      this.maxlength, this.sc, this.nc, this.tc, this._Messages, this.op);
 
   @override
-  List<Object?> get props => [_Messages, temp, op, maxlength, sc, nc, chats];
+  List<Object?> get props => [
+        _Messages,
+        temp,
+        op,
+        maxlength,
+        sc,
+        nc,
+        chats,
+        dropitems,
+        selectedDropdown
+      ];
 
   get Messages => _Messages;
 }
@@ -105,7 +116,31 @@ class SetTokenEvent extends AppEvent {
   SetTokenEvent(this.tc);
 }
 
+class SetDropdownEvent extends AppEvent {
+  int? selected;
+  BuildContext context;
+  SetDropdownEvent(this.context, this.selected);
+}
+
 class ChatBloc extends Bloc<AppEvent, AppState> {
+  List<List<Message>> defallMessages = [
+    [
+      // {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
+      Message(1, 'Ask any question...', 0, 0)
+    ],
+    [
+      // {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
+      Message(1, 'Start with any phrase...', 0, 0)
+    ],
+    [
+      // {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
+      Message(1, 'Give any description...', 0, 0)
+    ],
+    [
+      // {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
+      Message(1, 'Upload an audio...', 0, 0)
+    ]
+  ];
   List<List<Message>> allMessages = [
     [
       // {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
@@ -127,11 +162,12 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
   int op = 0, sz = 0, tc = 0;
   double temp = 0.7, maxlength = 300, n = 1;
-  bool nc = true, sc = true;
+  bool nc = true, sc = false;
   List<ChatModel> chats = [];
-  List<DropdownMenuItem<String>> dropitems = [];
+  List<DropdownMenuItem<int>> dropitems = [];
+  int? selectedDropdown;
   ChatBloc()
-      : super(ChatLoadedState([], [], 0.7, 300, true, true, 0,
+      : super(ChatLoadedState([], null, [], 0.7, 300, false, true, 0,
             [Message(1, 'Ask any question...', 0, 0)], 0)) {
     on<FetchResultEvent>(
       (event, emit) async {
@@ -141,8 +177,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         allMessages[op].add(Message(1, 'Getting your answer...', 0, 0));
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
-            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc,
-                tc, allMessages[op], op));
+            : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+                maxlength, sc, nc, tc, allMessages[op], op));
 
         String res = "";
         List<Message> imres = [];
@@ -158,6 +194,17 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             } else {
               res = await DatabaseService()
                   .chat(event.query.trim(), temp, maxlength.toInt());
+            }
+            if (sc) {
+              allMessages[op].removeLast();
+              allMessages[op].add(Message(1, res, 1, 0));
+              DatabaseService().addMessage(<Message>[
+                allMessages[op][allMessages[op].length - 2],
+                allMessages[op].last
+              ], chats[selectedDropdown!].id);
+            } else {
+              allMessages[op].removeLast();
+              allMessages[op].add(Message(1, res, 1, 0));
             }
             break;
 
@@ -185,16 +232,16 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                 .chat(event.query, temp, maxlength.toInt());
             break;
         }
-        allMessages[op].removeLast();
-        op == 2
-            ? allMessages[op] = allMessages[op] + imres
-            : allMessages[op].add(Message(1, res, 1, 0));
+        // allMessages[op].removeLast();
+        // op == 2
+        //     ? allMessages[op] = allMessages[op] + imres
+        //     : allMessages[op].add(Message(1, res, 1, 0));
         emit(ChatLoadingState());
         add(SetTokenEvent(0));
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
-            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc,
-                tc, allMessages[op], op));
+            : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+                maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -207,8 +254,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         } else if (op == 3) {
           emit(UnderProgressState(op));
         } else {
-          emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-              allMessages[op], op));
+          emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+              maxlength, sc, nc, tc, allMessages[op], op));
         }
       },
     );
@@ -218,8 +265,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         emit(ChatLoadingState());
         allMessages[op].removeRange(event.idx, allMessages[op].length);
 
-        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-            allMessages[op], op));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -236,8 +283,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<SetTempEvent>(
       (event, emit) {
         temp = event.temp;
-        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-            allMessages[op], op));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -245,8 +292,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         // emit(ChatLoadingState());
         maxlength = event.len;
-        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-            allMessages[op], op));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -270,8 +317,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         // emit(ChatLoadingState());
         nc = event.nc;
-        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-            allMessages[op], op));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -280,13 +327,23 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         // emit(ChatLoadingState());
         sc = event.sc;
         if (sc) {
-          final chats = await DatabaseService().getChats();
+          dropitems = [];
+          chats = await DatabaseService().getChats();
           for (int i = 0; i < chats.length; i++) {
-            dropitems.add(DropdownMenuItem(child: Text(chats[i].name)));
+            dropitems.add(DropdownMenuItem(
+              child: Text(chats[i].name),
+              value: i,
+            ));
           }
+          dropitems.add(DropdownMenuItem(
+            child: const Text('New Chat'),
+            value: chats.length,
+          ));
+          selectedDropdown = null;
+          // allMessages[op] = await DatabaseService().getMessages(chats[0].id);
         }
-        emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, tc,
-            allMessages[op], op));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
 
@@ -306,8 +363,82 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         tc = c;
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
-            : emit(ChatLoadedState(dropitems, chats, temp, maxlength, sc, nc, c,
-                allMessages[op], op));
+            : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+                maxlength, sc, nc, c, allMessages[op], op));
+      },
+    );
+
+    on<SetDropdownEvent>(
+      (event, emit) async {
+        // emit(ChatLoadingState()); 
+
+        final _key = GlobalKey<FormState>();
+        AutovalidateMode _autovalidate = AutovalidateMode.disabled;
+        TextEditingController _controller = TextEditingController();
+        if (event.selected == chats.length) {
+          await showDialog(
+            context: event.context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text("Name for the chat:"),
+                content: Form(
+                  key: _key,
+                  autovalidateMode: _autovalidate,
+                  child: TextFormField(
+                      controller: _controller,
+                      validator: (value) {
+                        if (value == "") {
+                          return 'enter a name';
+                        }
+                      }),
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(event.context);
+                      },
+                      child: const Text('Cancel')),
+                  TextButton(
+                      onPressed: () async {
+                        if (_key.currentState!.validate()) {
+                          final chat = await DatabaseService()
+                              .createChat(_controller.text);
+
+                          int val = chats.length;
+                          if (chat != null) {
+                            dropitems.removeLast();
+                            chats.add(chat);
+                            dropitems.add(DropdownMenuItem(
+                              child: Text(chat.name),
+                              value: val,
+                            ));
+                            dropitems.add(DropdownMenuItem(
+                              child: const Text('New Chat'),
+                              value: chats.length,
+                            ));
+                            allMessages[op] = defallMessages[op];
+                          }
+
+                          selectedDropdown = val;
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text('Confirm')),
+                ],
+              );
+            },
+          );
+          allMessages[op] = defallMessages[op];
+        } else if (event.selected != null) {
+          selectedDropdown = event.selected;
+          allMessages[op] =
+              await DatabaseService().getMessages(chats[selectedDropdown!].id);
+        } else {
+          allMessages[op] = defallMessages[op];
+        }
+
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, tc, allMessages[op], op));
       },
     );
   }

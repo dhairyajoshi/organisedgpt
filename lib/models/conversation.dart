@@ -11,6 +11,6 @@ class ChatModel {
   ChatModel(this.id, this.name);
 
   factory ChatModel.fromJson(Map<String, dynamic> json) {
-    return ChatModel(json['id'], json['name']);
-  }
+    return ChatModel(json['_id'], json['name']);
+  } 
 }

@@ -21,11 +21,12 @@ class ChatSidebar extends StatelessWidget {
       decoration: BoxDecoration(
           color: Color.fromRGBO(32, 33, 35, 1),
           border: Border(right: BorderSide(width: 1, color: Colors.white))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
         children: [
-          Text(
+          Text( 
             'Preferences',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
@@ -43,6 +44,21 @@ class ChatSidebar extends StatelessWidget {
                     value: state.nc,
                     onChanged: (val) {
                       BlocProvider.of<ChatBloc>(context).add(SetNCEvent(val!));
+                    })
+              ],
+            ),
+          ),
+          Tooltip(
+            message:
+                'Ensure chat synchronization across all devices for universal accessibility',
+            child: Row(
+              children: [
+                Text('Sync conversations: '),
+                Checkbox(
+                    activeColor: Colors.grey,
+                    value: state.sc,
+                    onChanged: (val) {
+                      BlocProvider.of<ChatBloc>(context).add(SetSCEvent(val!));
                     })
               ],
             ),
@@ -263,8 +279,7 @@ class ChatSidebar extends StatelessWidget {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: ((context) =>
-                                        LoginScreen())));
+                                    builder: ((context) => LoginScreen())));
                           },
                           child: Text('Confirm')),
                     ],

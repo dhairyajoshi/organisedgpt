@@ -83,7 +83,9 @@ class MobileChatScreen extends StatelessWidget {
                     fit: FlexFit.tight,
                     child: BlocBuilder<ChatBloc, AppState>(
                       builder: (context, state) {
-                        if (state is ChatLoadedState) {
+                        if (state is ChatLoadedState &&
+                            ((state.sc && state.selectedDropdown != null) ||
+                                !state.sc)) {
                           return Container(
                             // color: Colors.white,
                             padding: EdgeInsets.symmetric(horizontal: 15),

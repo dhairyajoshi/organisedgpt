@@ -80,9 +80,7 @@ class ChatScreen extends StatelessWidget {
                                 if (state is ChatLoadedState) {
                                   return ChatContent(context, state);
                                 }
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
+                                return SizedBox.shrink();
                               },
                             )),
                         Flexible(
@@ -90,7 +88,9 @@ class ChatScreen extends StatelessWidget {
                             fit: FlexFit.tight,
                             child: BlocBuilder<ChatBloc, AppState>(
                               builder: (context, state) {
-                                if (state is ChatLoadedState) {
+                                if (state is ChatLoadedState &&
+                                    ((state.sc &&
+                                        state.selectedDropdown != null) || !state.sc)) {
                                   return Container(
                                     // color: Colors.white,
                                     padding:
