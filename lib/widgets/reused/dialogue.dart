@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown_selectionarea/flutter_markdown.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -9,9 +11,9 @@ import '../../bloc/chatbloc.dart';
 import '../../bloc/events/chatevents.dart';
 
 class Dialogue extends StatelessWidget {
-  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key}); 
+  Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key});
   String text;
-  int i, u, t, a; 
+  int i, u, t, a;
   BuildContext ctx;
   @override
   Widget build(BuildContext context) {
@@ -44,69 +46,109 @@ class Dialogue extends StatelessWidget {
               Row(
                 children: [
                   if (u == 0)
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Are you sure?"),
-                                content: Text(
-                                    'This will delete all the following chats too'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Cancel')),
-                                  TextButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ChatBloc>(ctx)
-                                            .add(DeleteChatEvent(i));
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Confirm')),
-                                ],
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              await Clipboard.setData(
+                                  ClipboardData(text: text));
+                              Fluttertoast.showToast(
+                                  msg: 'copied to clipboard',
+                                  timeInSecForIosWeb: 1,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
+                            icon: Icon(
+                              Icons.copy,
+                              size: 17,
+                            )), 
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Are you sure?"),
+                                    content: Text(
+                                        'This will delete all the following chats too'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            BlocProvider.of<ChatBloc>(ctx)
+                                                .add(DeleteChatEvent(i));
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Confirm')),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.delete_outlined,
-                          size: 17,
-                        )),
+                            icon: Icon(
+                              Icons.delete_outlined,
+                              size: 17,
+                            )),
+                      ],
+                    ),
                   if (u == 1 && a == 1)
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text("Are you sure?"),
-                                content: Text(
-                                    'This will delete all the following chats too'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Cancel')),
-                                  TextButton(
-                                      onPressed: () {
-                                        BlocProvider.of<ChatBloc>(ctx)
-                                            .add(RegenChatEvent(i));
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('Confirm')),
-                                ],
+                    Row(
+                      children: [
+                        IconButton(
+                            onPressed: () async {
+                              await Clipboard.setData(
+                                  ClipboardData(text: text));
+                              Fluttertoast.showToast(
+                                  msg: 'copied to clipboard',
+                                  timeInSecForIosWeb: 1,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            },
+                            icon: Icon(
+                              Icons.copy,
+                              size: 17,
+                            )),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Are you sure?"),
+                                    content: Text(
+                                        'This will delete all the following chats too'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel')),
+                                      TextButton(
+                                          onPressed: () {
+                                            BlocProvider.of<ChatBloc>(ctx)
+                                                .add(RegenChatEvent(i));
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Confirm')),
+                                    ],
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        icon: Icon(
-                          Icons.refresh,
-                          size: 17,
-                        )),
+                            icon: Icon(
+                              Icons.refresh,
+                              size: 17,
+                            )),
+                      ],
+                    ),
                 ],
               )
             ],
