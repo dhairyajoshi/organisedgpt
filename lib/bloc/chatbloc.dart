@@ -111,11 +111,15 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               res = await DatabaseService()
                   .complete(event.query, temp, maxlength.toInt());
             }
-
+            allMessages[op].removeLast();
+            allMessages[op].add(Message(1, res, 1, 0));
             break;
 
           case 2:
             imres = await DatabaseService().image(event.query, n.toInt(), sz);
+            allMessages[op].removeLast();
+              
+              allMessages[op] = allMessages[op] + imres;
             break;
 
           default:

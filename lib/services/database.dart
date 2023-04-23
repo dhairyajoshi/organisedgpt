@@ -153,6 +153,7 @@ class DatabaseService {
   }
 
   Future<String> complete(String query, double temp, int len) async {
+    
     final body = json.encode({
       "model": "text-davinci-003",
       "prompt": query,
@@ -172,6 +173,7 @@ class DatabaseService {
         });
     //
     final data = json.decode(response.body);
+    
     if (response.statusCode == 200) {
       return data['choices'][0]['text'];
     }
