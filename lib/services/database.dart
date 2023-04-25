@@ -24,7 +24,7 @@ class DatabaseService {
       return true;
     }
     return false;
-  } 
+  }
 
   Future<bool> signUp(UserModel user) async {
     final response = await http.post(Uri.parse('${baseUrl}/user/signup'),
@@ -80,7 +80,6 @@ class DatabaseService {
     final response = await http.post(Uri.parse('${baseUrl}/conv/createchat'),
         headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
         body: {"name": name});
-    print(response.body);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return ChatModel.fromJson(data['chat']);
@@ -97,7 +96,6 @@ class DatabaseService {
           {'u': chats[i].u, 'a': chats[i].a, 't': chats[i].t, 'c': chats[i].c});
     }
     final body = json.encode(jdata);
-    print(jdata);
     final response =
         await http.post(Uri.parse('${baseUrl}/conv/addmessages?id=$id'),
             headers: <String, String>{
@@ -105,7 +103,6 @@ class DatabaseService {
               'content-type': 'application/json'
             },
             body: body);
-    print(response.body);
     if (response.statusCode == 200) {
       return true;
     }
@@ -113,17 +110,25 @@ class DatabaseService {
     return false;
   }
 
-  void updateMessages(List<ChatModel> chats, String id) async {
-    List<ChatModel> chats = [];
+  Future<bool> updateMessages(List<Message> chats, String id) async {
     final pref = await SharedPreferences.getInstance();
-    final response = await http.post(
-        Uri.parse('${baseUrl}/conv/updatemessages'),
-        headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
-        body: {'chatId': id, 'messages': chats});
-    final data = json.decode(response.body);
-    if (response.statusCode == 200) {
-      print(data);
+    List<Map<String, dynamic>> jdata = [];
+    for (int i = 0; i < chats.length; i++) {
+      jdata.add(
+          {'u': chats[i].u, 'a': chats[i].a, 't': chats[i].t, 'c': chats[i].c});
     }
+    final body = json.encode(jdata);
+    final response =
+        await http.post(Uri.parse('${baseUrl}/conv/updatemessages?id=$id'),
+            headers: <String, String>{
+              'Authorization': 'Bearer ${pref.getString('token')}',
+              'content-type': 'application/json'
+            },
+            body: body);
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 
   Future<String> chat(String query, double temp, int len) async {
@@ -153,7 +158,6 @@ class DatabaseService {
   }
 
   Future<String> complete(String query, double temp, int len) async {
-    
     final body = json.encode({
       "model": "text-davinci-003",
       "prompt": query,
@@ -173,7 +177,7 @@ class DatabaseService {
         });
     //
     final data = json.decode(response.body);
-    
+
     if (response.statusCode == 200) {
       return data['choices'][0]['text'];
     }

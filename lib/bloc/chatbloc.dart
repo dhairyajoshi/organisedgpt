@@ -172,12 +172,19 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     );
 
     on<DeleteChatEvent>(
-      (event, emit) {
+      (event, emit) async {
         emit(ChatLoadingState());
         allMessages[op].removeRange(event.idx, allMessages[op].length);
-
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
+        if (sc) {
+          bool res = await DatabaseService()
+              .updateMessages(allMessages[op], chats[selectedDropdown!].id);
+          while (!res) {
+            res = await DatabaseService()
+                .updateMessages(allMessages[op], chats[selectedDropdown!].id);
+          }
+        }
       },
     );
 
@@ -187,6 +194,10 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         allMessages[op].removeRange(event.idx, allMessages[op].length);
         String query = allMessages[op].last.c;
         allMessages[op].removeLast();
+        if(sc) {
+          DatabaseService()
+            .updateMessages(allMessages[op], chats[selectedDropdown!].id);
+        }
         add(FetchResultEvent(query));
       },
     );
