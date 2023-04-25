@@ -194,8 +194,10 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         allMessages[op].removeRange(event.idx, allMessages[op].length);
         String query = allMessages[op].last.c;
         allMessages[op].removeLast();
-        DatabaseService()
+        if(sc) {
+          DatabaseService()
             .updateMessages(allMessages[op], chats[selectedDropdown!].id);
+        }
         add(FetchResultEvent(query));
       },
     );

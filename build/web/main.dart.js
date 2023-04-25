@@ -81508,12 +81508,11 @@ p=J.aj(q)
 p.is(q,a.a,p.gp(q))
 o=J.kx(r[s.ay]).d
 J.wF(r[s.ay])
-r=r[s.ay]
+if(s.dy){r=r[s.ay]
 q=s.fr
 p=s.fy
 p.toString
-new A.ey().nx(r,J.am(q,p).a)
-s.t(0,new A.fk(o))},
+new A.ey().nx(r,J.am(q,p).a)}s.t(0,new A.fk(o))},
 $S:481}
 A.a_T.prototype={
 $2(a,b){var s,r,q,p,o,n,m,l,k,j=this.a
