@@ -369,10 +369,10 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
           allMessages[op] =
               await DatabaseService().getMessages(chats[selectedDropdown!].id);
           if (allMessages[op].isEmpty) {
-            allMessages[op] = defallMessages[op];
+            allMessages[op] = [Message(1, 'Ask any question...', 0, 0)];
           }
         } else {
-          allMessages[op] = defallMessages[op];
+          allMessages[op] = [Message(1, 'Ask any question...', 0, 0)];
         }
 
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
