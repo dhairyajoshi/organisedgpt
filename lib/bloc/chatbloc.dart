@@ -351,7 +351,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                               child: const Text('New Chat'),
                               value: chats.length,
                             ));
-                            allMessages[op] = [];
+                            allMessages[op] = [
+                              Message(1, 'Ask any question...', 0, 0)
+                            ];
                           }
                           selectedDropdown = val;
                           Navigator.pop(context);
