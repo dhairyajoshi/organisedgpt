@@ -194,9 +194,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         allMessages[op].removeRange(event.idx, allMessages[op].length);
         String query = allMessages[op].last.c;
         allMessages[op].removeLast();
-        if(sc) {
+        if (sc) {
           DatabaseService()
-            .updateMessages(allMessages[op], chats[selectedDropdown!].id);
+              .updateMessages(allMessages[op], chats[selectedDropdown!].id);
         }
         add(FetchResultEvent(query));
       },
@@ -413,6 +413,97 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
+      },
+    );
+
+    on<RenameConvEvent>(
+      (event, emit) async {
+        final _key = GlobalKey<FormState>();
+        AutovalidateMode _autovalidate = AutovalidateMode.disabled;
+        TextEditingController _controller = TextEditingController();
+        await showDialog(
+          context: event.context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Name for the chat:"),
+              content: Form(
+                key: _key,
+                autovalidateMode: _autovalidate,
+                child: TextFormField(
+                    controller: _controller,
+                    validator: (value) {
+                      if (value == "") {
+                        return 'enter a name';
+                      }
+                    }),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(event.context);
+                    },
+                    child: const Text('Cancel')),
+                TextButton(
+                    onPressed: () async {
+                      if (_key.currentState!.validate()) {
+                        DatabaseService().renameChat(
+                            chats[selectedDropdown!].id, _controller.text);
+
+                        chats[selectedDropdown!].name = _controller.text;
+                        dropitems[selectedDropdown!] = DropdownMenuItem(
+                          child: Text(_controller.text),
+                          value: selectedDropdown!,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text('Confirm')),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    on<DeleteConvEvent>(
+      (event, emit) async {
+        await showDialog(
+          context: event.context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Are you sure?"),
+              content: Text('This will delete the chat'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(event.context);
+                    },
+                    child: const Text('Cancel')),
+                TextButton(
+                    onPressed: () async {
+                      Navigator.pop(event.context);
+                      DatabaseService().deleteChat(chats[selectedDropdown!].id);
+                      dropitems.removeAt(selectedDropdown!);
+                      chats.removeAt(selectedDropdown!);
+                      for (int i = 0; i < dropitems.length - 1; i++) {
+                        dropitems[i] = DropdownMenuItem(
+                          child: Text(chats[i].name),
+                          value: i,
+                        );
+                      }
+                      dropitems[chats.length] = DropdownMenuItem(
+                        child: Text('New Chat'),
+                        value: chats.length,
+                      );
+                      selectedDropdown = null;
+                      emit(ChatLoadedState(dropitems, selectedDropdown, chats,
+                          temp, maxlength, sc, nc, tc, allMessages[op], op));
+                    },
+                    child: const Text('Confirm')),
+              ],
+            );
+          },
+        );
       },
     );
   }

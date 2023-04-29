@@ -67,3 +67,13 @@ class SetDropdownEvent extends AppEvent {
   BuildContext context;
   SetDropdownEvent(this.context, this.selected);
 }
+
+class RenameConvEvent extends AppEvent{
+  BuildContext context;
+  RenameConvEvent(this.context);
+}
+
+class DeleteConvEvent extends AppEvent{
+  BuildContext context;
+  DeleteConvEvent(this.context);
+}

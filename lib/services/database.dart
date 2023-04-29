@@ -88,6 +88,25 @@ class DatabaseService {
     return null;
   }
 
+  void renameChat(String id,String name) async{
+    final pref = await SharedPreferences.getInstance();
+    final response = await http.post(Uri.parse('${baseUrl}/conv/renamechat?id=${id}'),
+        headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
+        body: {"name": name});
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+    }
+  }
+
+  void deleteChat(String id) async{
+    final pref = await SharedPreferences.getInstance();
+    final response = await http.post(Uri.parse('${baseUrl}/conv/deletechat?id=${id}'),
+        headers: {'Authorization': 'Bearer ${pref.getString('token')}'});
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+    }
+  }
+
   Future<bool> addMessage(List<Message> chats, String id) async {
     final pref = await SharedPreferences.getInstance();
     List<Map<String, dynamic>> jdata = [];

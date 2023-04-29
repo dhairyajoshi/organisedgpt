@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
@@ -23,15 +25,43 @@ class ChatContent extends StatelessWidget {
               flex: 1,
               child: Container(
                 // color: Colors.blue,
-                child: DropdownButton<int>(
-                  hint: Text('select chat'),
-                  disabledHint: Text('loading'),
-                  value: state.selectedDropdown,
-                  items: state.dropitems,
-                  onChanged: (value) {
-                    BlocProvider.of<ChatBloc>(context)
-                        .add(SetDropdownEvent(context, value));
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DropdownButton<int>(
+                      hint: Text('select chat'),
+                      disabledHint: Text('loading'),
+                      value: state.selectedDropdown,
+                      items: state.dropitems,
+                      onChanged: (value) {
+                        BlocProvider.of<ChatBloc>(context)
+                            .add(SetDropdownEvent(context, value));
+                      },
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    if (state.sc && state.selectedDropdown != null)
+                      IconButton(
+                          onPressed: () {
+                            BlocProvider.of<ChatBloc>(context)
+                                .add(RenameConvEvent(context));
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            size: 16,
+                          )),
+                    if (state.sc && state.selectedDropdown != null)
+                      IconButton(
+                          onPressed: () {
+                            BlocProvider.of<ChatBloc>(context)
+                                .add(DeleteConvEvent(context));
+                          },
+                          icon: Icon(
+                            Icons.delete_outline,
+                            size: 16,
+                          )),
+                  ],
                 ),
               ),
             ),
