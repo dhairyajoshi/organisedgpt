@@ -81814,8 +81814,7 @@ J.e4(o.fr,p)
 m=t.S
 o.fx.push(A.K3(A.V(p.b,null,null,null,null,null,null),n,m))
 o.fx.push(A.K3(B.y4,J.aT(o.fr),m))
-m=o.ay
-o.ax[m]=o.at[m]}o.fy=n
+o.ax[o.ay]=A.a([],t.n_)}o.fy=n
 A.bo(q.d,!1).k_(null)
 case 3:return A.M(null,r)}})
 return A.N($async$$0,r)},
@@ -81897,17 +81896,18 @@ J.axQ(o,n)
 for(o=t.kZ,m=0;n=p.fx,m<n.length-1;++m)n[m]=new A.jE(m,A.V(J.ak(p.fr,m).b,null,null,null,null,null,null),B.bw,null,o)
 n[J.aT(p.fr)]=A.K3(A.V("New Chat",null,null,null,null,null,null),J.aT(p.fr),t.S)
 p.fy=null
-o=q.c
-n=p.fx
-l=p.fr
-k=p.cx
-j=p.cy
-i=p.dy
-h=p.dx
-g=p.CW
-f=p.ay
-p=p.ax[f]
-if(!o.d)o.a.$1(new A.d6(p,f,g,k,j,i,h,l,n,null))
+o=p.ay
+n=p.at[o]
+p.ax[o]=n
+l=q.c
+k=p.fx
+j=p.fr
+i=p.cx
+h=p.cy
+g=p.dy
+f=p.dx
+p=p.CW
+if(!l.d)l.a.$1(new A.d6(n,o,p,i,h,g,f,j,k,null))
 return A.M(null,r)}})
 return A.N($async$$0,r)},
 $S:6}

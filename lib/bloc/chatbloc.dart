@@ -14,41 +14,17 @@ import 'events/chatevents.dart';
 import 'states/chatstates.dart';
 
 class ChatBloc extends Bloc<AppEvent, AppState> {
-  List<List<Message>> defallMessages = [
-    [
-      // {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
-      Message(1, 'Ask any question...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
-      Message(1, 'Start with any phrase...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
-      Message(1, 'Give any description...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
-      Message(1, 'Upload an audio...', 0, 0)
-    ]
+  final List<List<Message>> defallMessages = [
+    [Message(1, 'Ask any question...', 0, 0)],
+    [Message(1, 'Start with any phrase...', 0, 0)],
+    [Message(1, 'Give any description...', 0, 0)],
+    [Message(1, 'Upload an audio...', 0, 0)]
   ];
   List<List<Message>> allMessages = [
-    [
-      // {'u': 1, "c": 'Ask any question...', 'a': 0, 't': 0}
-      Message(1, 'Ask any question...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Start with any phrase...', 'a': 0, 't': 0}
-      Message(1, 'Start with any phrase...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Give any description...', 'a': 0, 't': 0}
-      Message(1, 'Give any description...', 0, 0)
-    ],
-    [
-      // {'u': 1, "c": 'Upload an audio...', 'a': 0, 't': 0}
-      Message(1, 'Upload an audio...', 0, 0)
-    ]
+    [Message(1, 'Ask any question...', 0, 0)],
+    [Message(1, 'Start with any phrase...', 0, 0)],
+    [Message(1, 'Give any description...', 0, 0)],
+    [Message(1, 'Upload an audio...', 0, 0)]
   ];
 
   int op = 0, sz = 0, tc = 0;
@@ -128,10 +104,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                 .chat(event.query, temp, maxlength.toInt());
             break;
         }
-        // allMessages[op].removeLast();
-        // op == 2
-        //     ? allMessages[op] = allMessages[op] + imres
-        //     : allMessages[op].add(Message(1, res, 1, 0));
         emit(ChatLoadingState());
         add(SetTokenEvent(0));
         op == 2
@@ -143,7 +115,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SelectOptionEvent>(
       (event, emit) {
-        // emit(ChatLoadingState());
         op = event.op;
         if (op == 0) {
           if (!prefset) {
@@ -213,7 +184,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetLenEvent>(
       (event, emit) {
-        // emit(ChatLoadingState());
         prefset = true;
         maxlength = event.len;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
@@ -223,7 +193,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetNEvent>(
       (event, emit) {
-        // emit(ChatLoadingState());
         n = event.n;
         emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
       },
@@ -240,7 +209,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
     on<SetNCEvent>(
       (event, emit) {
         prefset = true;
-        // emit(ChatLoadingState());
         nc = event.nc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
@@ -249,7 +217,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetSCEvent>(
       (event, emit) async {
-        // emit(ChatLoadingState());
         sc = event.sc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
@@ -312,7 +279,6 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             value: chats.length,
           ));
           selectedDropdown = null;
-          // allMessages[op] = await DatabaseService().getMessages(chats[0].id);
         }
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, tc, allMessages[op], op));
@@ -342,11 +308,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
     on<SetDropdownEvent>(
       (event, emit) async {
-        // emit(ChatLoadingState());
-
-        final _key = GlobalKey<FormState>();
-        AutovalidateMode _autovalidate = AutovalidateMode.disabled;
-        TextEditingController _controller = TextEditingController();
+        final _keyy = GlobalKey<FormState>();
+        AutovalidateMode _autovalidatee = AutovalidateMode.disabled;
+        TextEditingController _controllerr = TextEditingController();
         if (event.selected == chats.length) {
           await showDialog(
             context: event.context,
@@ -354,10 +318,10 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               return AlertDialog(
                 title: const Text("Name for the chat:"),
                 content: Form(
-                  key: _key,
-                  autovalidateMode: _autovalidate,
+                  key: _keyy,
+                  autovalidateMode: _autovalidatee,
                   child: TextFormField(
-                      controller: _controller,
+                      controller: _controllerr,
                       validator: (value) {
                         if (value == "") {
                           return 'enter a name';
@@ -372,10 +336,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                       child: const Text('Cancel')),
                   TextButton(
                       onPressed: () async {
-                        if (_key.currentState!.validate()) {
+                        if (_keyy.currentState!.validate()) {
                           final chat = await DatabaseService()
-                              .createChat(_controller.text);
-
+                              .createChat(_controllerr.text);
                           int val = chats.length;
                           if (chat != null) {
                             dropitems.removeLast();
@@ -388,9 +351,8 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                               child: const Text('New Chat'),
                               value: chats.length,
                             ));
-                            allMessages[op] = defallMessages[op];
+                            allMessages[op] = [];
                           }
-
                           selectedDropdown = val;
                           Navigator.pop(context);
                         }
@@ -496,6 +458,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                         value: chats.length,
                       );
                       selectedDropdown = null;
+                      allMessages[op] = defallMessages[op];
                       emit(ChatLoadedState(dropitems, selectedDropdown, chats,
                           temp, maxlength, sc, nc, tc, allMessages[op], op));
                     },
