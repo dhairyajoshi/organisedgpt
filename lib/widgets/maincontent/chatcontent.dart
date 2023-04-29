@@ -28,6 +28,7 @@ class ChatContent extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Spacer(),
                     DropdownButton<int>(
                       hint: Text('select chat'),
                       disabledHint: Text('loading'),
@@ -41,26 +42,31 @@ class ChatContent extends StatelessWidget {
                     SizedBox(
                       width: 15,
                     ),
-                    if (state.sc && state.selectedDropdown != null)
-                      IconButton(
-                          onPressed: () {
-                            BlocProvider.of<ChatBloc>(context)
-                                .add(RenameConvEvent(context));
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 16,
-                          )),
-                    if (state.sc && state.selectedDropdown != null)
-                      IconButton(
-                          onPressed: () {
-                            BlocProvider.of<ChatBloc>(context)
-                                .add(DeleteConvEvent(context));
-                          },
-                          icon: Icon(
-                            Icons.delete_outline,
-                            size: 16,
-                          )),
+                    Expanded(
+                        child: Row(
+                      children: [
+                        if (state.sc && state.selectedDropdown != null)
+                          IconButton(
+                              onPressed: () {
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(RenameConvEvent(context));
+                              },
+                              icon: Icon(
+                                Icons.edit,
+                                size: 16,
+                              )),
+                        if (state.sc && state.selectedDropdown != null)
+                          IconButton(
+                              onPressed: () {
+                                BlocProvider.of<ChatBloc>(context)
+                                    .add(DeleteConvEvent(context));
+                              },
+                              icon: Icon(
+                                Icons.delete_outline,
+                                size: 16,
+                              )),
+                      ],
+                    ))
                   ],
                 ),
               ),
