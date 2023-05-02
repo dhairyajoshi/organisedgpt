@@ -2,14 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_markdown_selectionarea/flutter_markdown.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_downloader_web/image_downloader_web.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:markdown/markdown.dart' as md;
 import '../../bloc/chatbloc.dart';
 import '../../bloc/events/chatevents.dart';
-
 class Dialogue extends StatelessWidget {
   Dialogue(this.i, this.u, this.text, this.t, this.a, this.ctx, {super.key});
   String text;
@@ -63,7 +62,7 @@ class Dialogue extends StatelessWidget {
                             icon: Icon(
                               Icons.copy,
                               size: 17,
-                            )), 
+                            )),
                         IconButton(
                             onPressed: () {
                               showDialog(
@@ -177,11 +176,20 @@ class Dialogue extends StatelessWidget {
                 alignment: Alignment.topLeft,
                 width: double.infinity,
                 child: SelectionArea(
-                    child: MarkdownBody(
-                  data: text.trim(),
-                  styleSheet: MarkdownStyleSheet(
-                      textScaleFactor: 1.3, textAlign: WrapAlignment.start),
-                ))),
+                  child: MarkdownBody(
+                    data: text.trim(),
+                    
+                    extensionSet: md.ExtensionSet(
+                      md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+                      [
+                        md.EmojiSyntax(),
+                        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+                      ],
+                    ),
+                    styleSheet: MarkdownStyleSheet(
+                        textScaleFactor: 1.3, textAlign: WrapAlignment.start),
+                  ),
+                )),
         ],
       ),
     );

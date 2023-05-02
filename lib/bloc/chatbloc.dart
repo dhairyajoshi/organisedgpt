@@ -1,15 +1,11 @@
 //ignore_for_file: prefer_const_literals_to_create_immutables, sort_child_properties_last, prefer_const_constructors
-import 'dart:html';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/models/conversation.dart';
 import 'package:organisedgpt/services/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'events/chatevents.dart';
 import 'states/chatstates.dart';
 
@@ -29,13 +25,19 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
 
   int op = 0, sz = 0, tc = 0;
   double temp = 0.7, maxlength = 300, n = 1;
-  bool nc = true, sc = false;
+  bool nc = true, sc = false, sfx = false;
   List<ChatModel> chats = [];
   List<DropdownMenuItem<int>> dropitems = [];
   int? selectedDropdown;
   bool prefset = false;
+  String suffix = "";
+
+  void setSuffix(String sfx) {
+    suffix = sfx;
+  }
+
   ChatBloc()
-      : super(ChatLoadedState([], null, [], 0.7, 300, false, true, 0,
+      : super(ChatLoadedState([], null, [], 0.7, 300, false, true, false, 0,
             [Message(1, 'Ask any question...', 0, 0)], 0)) {
     on<FetchResultEvent>(
       (event, emit) async {
@@ -46,22 +48,31 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, tc, allMessages[op], op));
 
         String res = "";
         List<Message> imres = [];
         switch (op) {
           case 0:
-            String fquery = "";
-            for (int i = 0; i < allMessages[op].length - 1; i++) {
-              fquery += '${allMessages[op][i].c}\n';
-            }
             if (nc) {
-              res =
-                  await DatabaseService().chat(fquery, temp, maxlength.toInt());
+              String fquery = "";
+              for (int i = 0; i < allMessages[op].length - 1; i++) {
+                fquery += '${allMessages[op][i].c}\n';
+              }
+              if (sfx) {
+                fquery = fquery.substring(0, fquery.length - 1);
+              }
+              res = await DatabaseService().chat(
+                  sfx ? '$fquery ${suffix.trim()}' : fquery,
+                  temp,
+                  maxlength.toInt());
             } else {
-              res = await DatabaseService()
-                  .chat(event.query.trim(), temp, maxlength.toInt());
+              res = await DatabaseService().chat(
+                  sfx
+                      ? event.query.trim() + ' ' + suffix.trim()
+                      : event.query.trim(),
+                  temp,
+                  maxlength.toInt());
             }
             if (sc) {
               allMessages[op].removeLast();
@@ -82,11 +93,15 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               fquery += '${allMessages[op][i].c}\n';
             }
             if (nc) {
-              res = await DatabaseService()
-                  .complete(fquery, temp, maxlength.toInt());
+              res = await DatabaseService().complete(
+                  sfx ? fquery + suffix.trim() : fquery,
+                  temp,
+                  maxlength.toInt());
             } else {
-              res = await DatabaseService()
-                  .complete(event.query, temp, maxlength.toInt());
+              res = await DatabaseService().complete(
+                  sfx ? event.query.trim() + suffix.trim() : event.query.trim(),
+                  temp,
+                  maxlength.toInt());
             }
             allMessages[op].removeLast();
             allMessages[op].add(Message(1, res, 1, 0));
@@ -109,7 +124,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -123,7 +138,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             nc = true;
           }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-              maxlength, sc, nc, tc, allMessages[op], op));
+              maxlength, sc, nc, sfx, tc, allMessages[op], op));
         } else if (op == 1) {
           selectedDropdown = null;
           sc = false;
@@ -133,7 +148,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             maxlength = 3100;
           }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-              maxlength, sc, nc, tc, allMessages[op], op));
+              maxlength, sc, nc, sfx, tc, allMessages[op], op));
         } else if (op == 2) {
           emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
         } else if (op == 3) {
@@ -147,7 +162,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         emit(ChatLoadingState());
         allMessages[op].removeRange(event.idx, allMessages[op].length);
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
         if (sc) {
           bool res = await DatabaseService()
               .updateMessages(allMessages[op], chats[selectedDropdown!].id);
@@ -178,7 +193,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         temp = event.temp;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -187,7 +202,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         maxlength = event.len;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -211,7 +226,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         nc = event.nc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -219,7 +234,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         sc = event.sc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
         if (sc) {
           final pref = await SharedPreferences.getInstance();
           if (pref.getString('token') == null) {
@@ -240,7 +255,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               },
             );
             emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, tc, allMessages[op], op));
             return;
           }
           if (op != 0) {
@@ -263,7 +278,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               },
             );
             emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, tc, allMessages[op], op));
             return;
           }
           dropitems = [];
@@ -281,7 +296,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
           selectedDropdown = null;
         }
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -302,7 +317,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, c, allMessages[op], op));
+                maxlength, sc, nc, sfx, c, allMessages[op], op));
       },
     );
 
@@ -376,7 +391,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         }
 
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
 
@@ -461,14 +476,32 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                       );
                       selectedDropdown = null;
                       allMessages[op] = defallMessages[op];
-                      emit(ChatLoadedState(dropitems, selectedDropdown, chats,
-                          temp, maxlength, sc, nc, tc, allMessages[op], op));
+                      emit(ChatLoadedState(
+                          dropitems,
+                          selectedDropdown,
+                          chats,
+                          temp,
+                          maxlength,
+                          sc,
+                          nc,
+                          sfx,
+                          tc,
+                          allMessages[op],
+                          op));
                     },
                     child: const Text('Confirm')),
               ],
             );
           },
         );
+      },
+    );
+
+    on<ToggleSuffixEvent>(
+      (event, emit) {
+        sfx = event.sfx;
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, sfx, tc, allMessages[op], op));
       },
     );
   }

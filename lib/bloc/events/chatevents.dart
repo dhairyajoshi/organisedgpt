@@ -77,3 +77,8 @@ class DeleteConvEvent extends AppEvent{
   BuildContext context;
   DeleteConvEvent(this.context);
 }
+
+class ToggleSuffixEvent extends AppEvent{
+  bool sfx;
+  ToggleSuffixEvent(this.sfx);
+}

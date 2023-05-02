@@ -88,9 +88,10 @@ class DatabaseService {
     return null;
   }
 
-  void renameChat(String id,String name) async{
+  void renameChat(String id, String name) async {
     final pref = await SharedPreferences.getInstance();
-    final response = await http.post(Uri.parse('${baseUrl}/conv/renamechat?id=${id}'),
+    final response = await http.post(
+        Uri.parse('${baseUrl}/conv/renamechat?id=${id}'),
         headers: {'Authorization': 'Bearer ${pref.getString('token')}'},
         body: {"name": name});
     if (response.statusCode == 200) {
@@ -98,9 +99,10 @@ class DatabaseService {
     }
   }
 
-  void deleteChat(String id) async{
+  void deleteChat(String id) async {
     final pref = await SharedPreferences.getInstance();
-    final response = await http.post(Uri.parse('${baseUrl}/conv/deletechat?id=${id}'),
+    final response = await http.post(
+        Uri.parse('${baseUrl}/conv/deletechat?id=${id}'),
         headers: {'Authorization': 'Bearer ${pref.getString('token')}'});
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -151,6 +153,7 @@ class DatabaseService {
   }
 
   Future<String> chat(String query, double temp, int len) async {
+    
     final body = json.encode({
       "model": "gpt-3.5-turbo",
       "messages": [

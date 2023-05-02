@@ -22,7 +22,7 @@ class MobileChatSidebar extends StatelessWidget {
       children: [
         Text(
           'Preferences',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold), 
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         SizedBox(
           height: 15,
@@ -92,6 +92,40 @@ class MobileChatSidebar extends StatelessWidget {
               onChanged: (val) {
                 BlocProvider.of<ChatBloc>(ctx).add(SetLenEvent(val));
               }),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          'Inject suffix:',
+          style: TextStyle(fontSize: 15),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+          decoration:
+              BoxDecoration(border: Border.all(width: 1, color: Colors.white)),
+          child: Row(
+            children: [
+              Checkbox(
+                  activeColor: Colors.grey,
+                  value: state.sfx,
+                  onChanged: (val) {
+                    BlocProvider.of<ChatBloc>(context)
+                        .add(ToggleSuffixEvent(val!));
+                  }),
+              SizedBox(
+                width: 2,
+              ),
+              Expanded(
+                  child: TextField(
+                onChanged: ((value) =>
+                    BlocProvider.of<ChatBloc>(context).setSuffix(value)),
+                decoration: InputDecoration(border: InputBorder.none),
+              )),
+            ],
+          ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
