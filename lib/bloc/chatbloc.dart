@@ -169,6 +169,9 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         emit(ChatLoadingState());
         allMessages[op].removeRange(event.idx, allMessages[op].length);
+        if (allMessages[op].isEmpty) {
+          allMessages[op] = [Message(1, 'Ask any question...', 0, 0)];
+        }
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
             maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
         if (sc) {
