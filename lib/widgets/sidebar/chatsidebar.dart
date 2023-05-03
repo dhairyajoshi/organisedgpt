@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/bloc/chatbloc.dart';
 import 'package:organisedgpt/screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../bloc/events/chatevents.dart';
 import '../../bloc/states/chatstates.dart';
-import '../../screens/anonlogin.dart';
 
 class ChatSidebar extends StatelessWidget {
   BuildContext ctx;
@@ -131,7 +129,8 @@ class ChatSidebar extends StatelessWidget {
                   controller: state.sController,
                   onChanged: ((value) => BlocProvider.of<ChatBloc>(context)
                       .add(SetSuffixEvent(value))),
-                  decoration: InputDecoration(border: InputBorder.none),
+                  decoration: InputDecoration(
+                      border: InputBorder.none, hintText: 'Enter suffix'),
                 )),
               ],
             ),

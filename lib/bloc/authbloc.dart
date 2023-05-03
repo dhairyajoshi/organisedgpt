@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:organisedgpt/bloc/appbloc.dart';
 import 'package:organisedgpt/models/userModel.dart';
 import 'package:organisedgpt/screens/chat.dart';
-import 'package:organisedgpt/screens/chatmobile.dart';
 import 'package:organisedgpt/services/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,13 +44,8 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
         if (key == null) {
           emit(InputApiState());
         } else {
-          if (MediaQuery.of(event.context).size.width >= 1280) {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => ChatScreen())));
-          } else {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
-          }
+          Navigator.of(event.context).pushReplacement(
+              MaterialPageRoute(builder: ((context) => const ChatScreen())));
         }
       },
     );
@@ -60,13 +54,8 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         final pref = await SharedPreferences.getInstance();
         pref.setString('api', event.api);
-        if (MediaQuery.of(event.context).size.width >= 1280) {
-          Navigator.of(event.context).pushReplacement(
-              MaterialPageRoute(builder: ((context) => ChatScreen())));
-        } else {
-          Navigator.of(event.context).pushReplacement(
-              MaterialPageRoute(builder: ((context) => MobileChatScreen())));
-        }
+        Navigator.of(event.context).pushReplacement(
+            MaterialPageRoute(builder: ((context) => const ChatScreen())));
       },
     );
 
@@ -75,13 +64,8 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
         emit(CheckAuthState());
         final res = await DatabaseService().signUp(event.user);
         if (res) {
-          if (MediaQuery.of(event.context).size.width >= 1280) {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => ChatScreen())));
-          } else {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
-          }
+          Navigator.of(event.context).pushReplacement(
+              MaterialPageRoute(builder: ((context) => const ChatScreen())));
         }
         emit(InputApiState());
       },
@@ -92,13 +76,8 @@ class AuthBloc extends Bloc<AppEvent, AppState> {
         emit(CheckAuthState());
         final res = await DatabaseService().login(event.uname, event.pass);
         if (res) {
-          if (MediaQuery.of(event.context).size.width >= 1280) {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => ChatScreen())));
-          } else {
-            Navigator.of(event.context).pushReplacement(
-                MaterialPageRoute(builder: ((context) => MobileChatScreen())));
-          }
+          Navigator.of(event.context).pushReplacement(
+              MaterialPageRoute(builder: ((context) => const ChatScreen())));
         }
         emit(InputApiState());
       },
