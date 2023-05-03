@@ -119,7 +119,7 @@ class ChatSidebar extends StatelessWidget {
                 Checkbox(
                     activeColor: Colors.grey,
                     value: state.sfx,
-                    onChanged: (val) { 
+                    onChanged: (val) {
                       BlocProvider.of<ChatBloc>(context)
                           .add(ToggleSuffixEvent(val!));
                     }),
@@ -128,8 +128,9 @@ class ChatSidebar extends StatelessWidget {
                 ),
                 Expanded(
                     child: TextField(
-                  onChanged: ((value) =>
-                      BlocProvider.of<ChatBloc>(context).setSuffix(value)),
+                  controller: state.sController,
+                  onChanged: ((value) => BlocProvider.of<ChatBloc>(context)
+                      .add(SetSuffixEvent(value))),
                   decoration: InputDecoration(border: InputBorder.none),
                 )),
               ],

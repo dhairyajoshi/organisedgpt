@@ -31,14 +31,22 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
   int? selectedDropdown;
   bool prefset = false;
   String suffix = "";
-
-  void setSuffix(String sfx) {
-    suffix = sfx;
-  }
+  TextEditingController sController = TextEditingController();
 
   ChatBloc()
-      : super(ChatLoadedState([], null, [], 0.7, 300, false, true, false, 0,
-            [Message(1, 'Ask any question...', 0, 0)], 0)) {
+      : super(ChatLoadedState(
+            [],
+            null,
+            [],
+            0.7,
+            300,
+            false,
+            true,
+            false,
+            TextEditingController(),
+            0,
+            [Message(1, 'Ask any question...', 0, 0)],
+            0)) {
     on<FetchResultEvent>(
       (event, emit) async {
         if (event.query.trim() == "") return;
@@ -48,7 +56,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, sfx, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
 
         String res = "";
         List<Message> imres = [];
@@ -124,7 +132,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, sfx, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -138,7 +146,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             nc = true;
           }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-              maxlength, sc, nc, sfx, tc, allMessages[op], op));
+              maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
         } else if (op == 1) {
           selectedDropdown = null;
           sc = false;
@@ -148,7 +156,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
             maxlength = 3100;
           }
           emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-              maxlength, sc, nc, sfx, tc, allMessages[op], op));
+              maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
         } else if (op == 2) {
           emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz));
         } else if (op == 3) {
@@ -162,7 +170,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         emit(ChatLoadingState());
         allMessages[op].removeRange(event.idx, allMessages[op].length);
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
         if (sc) {
           bool res = await DatabaseService()
               .updateMessages(allMessages[op], chats[selectedDropdown!].id);
@@ -193,7 +201,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         temp = event.temp;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -202,7 +210,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         maxlength = event.len;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -226,7 +234,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         prefset = true;
         nc = event.nc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -234,7 +242,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) async {
         sc = event.sc;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
         if (sc) {
           final pref = await SharedPreferences.getInstance();
           if (pref.getString('token') == null) {
@@ -255,7 +263,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               },
             );
             emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, sfx, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
             return;
           }
           if (op != 0) {
@@ -278,7 +286,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
               },
             );
             emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, sfx, tc, allMessages[op], op));
+                maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
             return;
           }
           dropitems = [];
@@ -296,7 +304,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
           selectedDropdown = null;
         }
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -317,7 +325,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         op == 2
             ? emit(ImageGenerationState(n.toInt(), allMessages[op], op, sz))
             : emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-                maxlength, sc, nc, sfx, c, allMessages[op], op));
+                maxlength, sc, nc, sfx, sController, c, allMessages[op], op));
       },
     );
 
@@ -391,7 +399,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
         }
 
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
 
@@ -485,6 +493,7 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
                           sc,
                           nc,
                           sfx,
+                          sController,
                           tc,
                           allMessages[op],
                           op));
@@ -501,7 +510,17 @@ class ChatBloc extends Bloc<AppEvent, AppState> {
       (event, emit) {
         sfx = event.sfx;
         emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
-            maxlength, sc, nc, sfx, tc, allMessages[op], op));
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
+      },
+    );
+
+    on<SetSuffixEvent>(
+      (event, emit) {
+        sController.text = event.suf;
+        sController.selection = TextSelection.fromPosition(
+            TextPosition(offset: sController.text.length));
+        emit(ChatLoadedState(dropitems, selectedDropdown, chats, temp,
+            maxlength, sc, nc, sfx, sController, tc, allMessages[op], op));
       },
     );
   }

@@ -82,3 +82,8 @@ class ToggleSuffixEvent extends AppEvent{
   bool sfx;
   ToggleSuffixEvent(this.sfx);
 }
+
+class SetSuffixEvent extends AppEvent{
+  String suf;
+  SetSuffixEvent(this.suf);
+}
