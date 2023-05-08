@@ -92,7 +92,8 @@ class ChatScreen extends StatelessWidget {
                               builder: (context, state) {
                                 if (state is ChatLoadedState &&
                                     ((state.sc &&
-                                        state.selectedDropdown != null) || !state.sc)) {
+                                            state.selectedDropdown != null) ||
+                                        !state.sc)) {
                                   return Container(
                                     // color: Colors.white,
                                     padding:
@@ -103,6 +104,8 @@ class ChatScreen extends StatelessWidget {
                                         child: TextField(
                                           controller: _controller,
                                           keyboardType: TextInputType.multiline,
+                                          minLines: 1,
+                                          maxLines: state.es ? 1 : null,
                                           onChanged: ((value) {
                                             search = value;
                                             BlocProvider.of<ChatBloc>(context)

@@ -94,6 +94,8 @@ class MobileChatScreen extends StatelessWidget {
                                 child: TextField(
                                   controller: _controller,
                                   keyboardType: TextInputType.multiline,
+                                  minLines: 1,
+                                  maxLines: state.es?1:null, 
                                   onChanged: ((value) {
                                     search = value;
                                     BlocProvider.of<ChatBloc>(context)
