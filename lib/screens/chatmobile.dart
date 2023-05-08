@@ -123,7 +123,7 @@ class MobileChatScreen extends StatelessWidget {
                                             return AlertDialog(
                                               title: const Text(
                                                   "Name for the chat:"),
-                                              content: Text(search),
+                                              content: Text(_controller.text),
                                               actions: [
                                                 TextButton(
                                                     onPressed: () {
@@ -135,9 +135,9 @@ class MobileChatScreen extends StatelessWidget {
                                             );
                                           },
                                         );
+                                        BlocProvider.of<ChatBloc>(context).add(
+                                            FetchResultEvent(_controller.text));
                                         _controller.text = "";
-                                        BlocProvider.of<ChatBloc>(context)
-                                            .add(FetchResultEvent(search));
                                         search = "";
                                       },
                                     ),
