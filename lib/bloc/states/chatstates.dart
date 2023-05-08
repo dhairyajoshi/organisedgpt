@@ -16,13 +16,13 @@ class ChatLoadedState extends AppState {
   final List<Message> _Messages;
   int op, tc;
   double temp, maxlength;
-  bool sc, nc, sfx;
+  bool sc, nc, sfx,es;
   List<ChatModel> chats;
   List<DropdownMenuItem<int>> dropitems;
   int? selectedDropdown;
   TextEditingController sController;
   ChatLoadedState(this.dropitems, this.selectedDropdown, this.chats, this.temp,
-      this.maxlength, this.sc, this.nc, this.sfx,this.sController, this.tc, this._Messages, this.op);
+      this.maxlength, this.sc, this.nc, this.sfx,this.es,this.sController, this.tc, this._Messages, this.op);
 
   @override
   List<Object?> get props => [
@@ -33,6 +33,7 @@ class ChatLoadedState extends AppState {
         sc,
         nc,
         sfx,
+        es,
         sController,
         chats,
         dropitems,

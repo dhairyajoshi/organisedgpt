@@ -87,3 +87,8 @@ class SetSuffixEvent extends AppEvent{
   String suf;
   SetSuffixEvent(this.suf);
 }
+
+class SetESEvent extends AppEvent{
+  bool es;
+  SetESEvent(this.es);
+}

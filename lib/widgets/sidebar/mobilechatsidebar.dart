@@ -56,6 +56,17 @@ class MobileChatSidebar extends StatelessWidget {
             ],
           ),
         ),
+        Row(
+          children: [
+            Text('Enter to send: '),
+            Checkbox(
+                activeColor: Colors.grey,
+                value: state.es,
+                onChanged: (val) {
+                  BlocProvider.of<ChatBloc>(context).add(SetESEvent(val!));
+                })
+          ],
+        ),
         Text(
           'Temperature: ${state.temp}',
           style: TextStyle(fontSize: 15),
