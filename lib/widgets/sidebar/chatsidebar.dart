@@ -136,90 +136,109 @@ class ChatSidebar extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 15,
-          ),
-          InkWell(
-            onTap: () {
-              BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(0));
-            },
-            child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 15),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                decoration: BoxDecoration(
-                    color: state.op == 0
-                        ? Color.fromARGB(255, 95, 95, 95)
-                        : Colors.transparent,
-                    border: Border(bottom: BorderSide(color: Colors.grey))),
-                child: Center(
-                  child: Text(
-                    'ChatGPT',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ),
-          InkWell(
-            onTap: () {
-              BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(1));
-            },
-            child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                    color: state.op == 1
-                        ? Color.fromARGB(255, 95, 95, 95)
-                        : Colors.transparent,
-                    border: Border(bottom: BorderSide(color: Colors.grey))),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Center(
-                  child: Text(
-                    'GPT-3',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ),
-          InkWell(
-            onTap: () {
-              BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(2));
-            },
-            child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                    color: state.op == 2
-                        ? Color.fromARGB(255, 95, 95, 95)
-                        : Colors.transparent,
-                    border: Border(bottom: BorderSide(color: Colors.grey))),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Center(
-                  child: Text(
-                    'Image',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ),
-          InkWell(
-            onTap: () {
-              BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(3));
-            },
-            child: Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                    color: state.op == 3
-                        ? Color.fromARGB(255, 95, 95, 95)
-                        : Colors.transparent,
-                    border: Border(bottom: BorderSide(color: Colors.grey))),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: Center(
-                  child: Text(
-                    'Audio',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                )),
-          ),
-          SizedBox(
-            height: 15,
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: double.infinity,
+            child: ListView(
+              // mainAxisAlignment:
+              //     MainAxisAlignment.spaceEvenly,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              shrinkWrap: true,
+
+              children: [
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(0));
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      decoration: BoxDecoration(
+                          color: state.op == 0
+                              ? Color.fromARGB(255, 95, 95, 95)
+                              : Colors.transparent,
+                          border:
+                              Border(bottom: BorderSide(color: Colors.grey))),
+                      child: Center(
+                        child: Text(
+                          'ChatGPT',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(1));
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                          color: state.op == 1
+                              ? Color.fromARGB(255, 95, 95, 95)
+                              : Colors.transparent,
+                          border:
+                              Border(bottom: BorderSide(color: Colors.grey))),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: Center(
+                        child: Text(
+                          'GPT-3',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(2));
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                          color: state.op == 2
+                              ? Color.fromARGB(255, 95, 95, 95)
+                              : Colors.transparent,
+                          border:
+                              Border(bottom: BorderSide(color: Colors.grey))),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: Center(
+                        child: Text(
+                          'Image',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<ChatBloc>(ctx).add(SelectOptionEvent(3));
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                          color: state.op == 3
+                              ? Color.fromARGB(255, 95, 95, 95)
+                              : Colors.transparent,
+                          border:
+                              Border(bottom: BorderSide(color: Colors.grey))),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      child: Center(
+                        child: Text(
+                          'Audio',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+              ],
+            ),
           ),
           InkWell(
             child: Row(
