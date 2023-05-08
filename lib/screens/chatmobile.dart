@@ -116,7 +116,25 @@ class MobileChatScreen extends StatelessWidget {
                                   children: [
                                     IconButton(
                                       icon: Icon(Icons.send),
-                                      onPressed: () {
+                                      onPressed: () async {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  "Name for the chat:"),
+                                              content: Text(search),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child:
+                                                        const Text('Cancel')),
+                                              ],
+                                            );
+                                          },
+                                        );
                                         _controller.text = "";
                                         BlocProvider.of<ChatBloc>(context)
                                             .add(FetchResultEvent(search));
